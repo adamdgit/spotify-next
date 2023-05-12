@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import { redirect } from "next/navigation"; 
 
 export async function GET(req: NextRequest, res: NextResponse) {
 
@@ -12,7 +11,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
   // TODO: save state to ls or cookies to validate
 
   if (check_state === null) {
-    redirect("http://localhost:3000")
+    return NextResponse.redirect("http://localhost:3000")
   } else {
     const response = await fetch('https://accounts.spotify.com/api/token', {
       method: "POST",
@@ -33,7 +32,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
     const expires_in = data.expires_in
 
     // send tokens back to user via URL values
-    redirect(`http://localhost:3000/home?access_token=${access_token}&refresh_token=${refresh_token}&expires_in=${expires_in}`)
+    return NextResponse.redirect(`http://localhost:3000/home?access_token=${access_token}&refresh_token=${refresh_token}&expires_in=${expires_in}`)
   };
 
 }
