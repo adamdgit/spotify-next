@@ -1,0 +1,14 @@
+
+.loginWrap {
+  padding: 2rem;
+}
+
+.signInText {
+  color: lightblue;
+}
+
+.signIn {
+  width: 130px;
+  height: 35px;
+  border-radius: 5px;
+}
