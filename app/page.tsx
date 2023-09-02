@@ -1,23 +1,19 @@
-import styles from './page.module.css'
+'use client'
 
-const generateRandomString = (length: number) => {
-  let text = '';
-  let possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-
-  for (let i = 0; i < length; i++) {
-    text += possible.charAt(Math.floor(Math.random() * possible.length));
-  }
-  return text;
-};
+import { signOut, useSession } from 'next-auth/react'
 
 export default function Login() {
 
-  const state = generateRandomString(16);
+  const session = useSession();
 
   return (
-    <main className={styles.main}>
-      <p>You will be re-directed to the Spotify O-Auth validation page, to grant this app access.</p>
-      <a href={`http://localhost:3000/api/login?state=${state}`} role='button'>Login to Spotify</a>
+    <main>
+      <button onClick={() => signOut()}>Signout</button>
+      <h1>Logged in</h1>
+      <p>{session.data?.accessToken}</p>
+      <p>{session.data?.expires}</p>
+      <p>{session.data?.userId}</p>
+      <p>{session.data?.user?.name}</p>
     </main>
   )
 }
