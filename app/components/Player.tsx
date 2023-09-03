@@ -101,8 +101,8 @@ export default function Player({ ...props }) {
           songLength={songLength} 
           currentTrackPos={currentTrackPos} 
           setPos={setPos}
-          loading={isLoading}
-          is_paused={isPaused}
+          isLoading={isLoading}
+          isPaused={isPaused}
           player={player} 
         />
 
@@ -173,7 +173,7 @@ export default function Player({ ...props }) {
           </button>
         </div>
 
-        <VolumeControl />
+        <VolumeControl player={player} volumeLS={volumeLS} />
         <PlaybackDevices />
 
       </div>
