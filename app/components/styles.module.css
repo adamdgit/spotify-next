@@ -1,0 +1,316 @@
+
+.mainContent {
+  padding: 2rem;
+  background: linear-gradient(0deg, #111, #222);
+}
+
+.playlists {
+  margin-top: 3rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 300px);
+  gap: 2rem;
+  justify-content: center;
+}
+
+.header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap:  3rem;
+  background-color: black;
+  padding: 2rem;
+  border-bottom: 1px solid #444;
+}
+
+.header ul {
+  display: flex;
+  width: fit-content;
+  gap: 2rem;
+}
+
+.header ul li {
+  list-style: none;
+}
+
+.header ul li a {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100px;
+  height: 35px;
+}
+
+.header ul li a:hover > svg {
+  fill: #1ed760;
+}
+
+.signOut {
+  width: 80px;
+  height: 30px;
+  border-radius: 5px;
+}
+
+.signOut:hover {
+  background: #1ed760;
+}
+
+/*  Player styles */
+
+.playerControls {
+  position: sticky;
+  display: flex;
+  height: 125px;
+  padding: 1rem;
+  bottom: 0;
+  background-color: #111;
+  border-top: 1px solid #454545;
+  z-index: 999;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.playerWrap {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+}
+
+/*-----Timeline styles-----*/
+
+.timelineSeek {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+  grid-row: 2;
+  grid-column: 2;
+}
+
+.timelineSeek input {
+  width: 100%;
+}
+
+.timeline {
+  --progress: -100%;
+  position: relative;
+  height: 6px;
+  width: 100%;
+  background-color: #888;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.timelineThumb {
+  pointer-events: none; /* prevent onclick registering thumb as target instead of timeline */
+  position: absolute;
+  left: var(--progress);
+  height: 6px;
+  width: 100%;
+  background-color: #fff;
+}
+
+.timelineSeek:hover .timelineThumb,
+.volumeControl:hover .timelineThumb {
+  background-color: var(--blue);
+}
+
+
+/*-----Controls-----*/
+
+.currentInfo {
+  display: flex;
+  justify-self: flex-start;
+  gap: 1rem;
+  grid-row: span 2;
+  grid-column: 1;
+}
+
+.currentTrack {
+  font-weight: bold;
+  align-self: flex-end;
+}
+
+.currentArtist {
+  font-size: .8rem;
+  align-self: flex-start;
+}
+
+.playerBtns {
+  display: flex;
+  gap: 1rem;
+  justify-self: center;
+  grid-column: 2;
+}
+
+.shuffleBtn, .repeatBtn, 
+.nextBtn, .prevBtn,
+.playBtn, .volumeBtn,
+.showHidePlaylistBtn,
+.devicesBtn {
+  position: relative;
+  background-color: #111;
+  color: #eee;
+}
+
+.shuffleBtn:hover, .repeatBtn:hover, 
+.nextBtn:hover, .prevBtn:hover,
+.playBtn:hover, .volumeBtn:hover,
+.showHidePlaylistBtn:hover, .devicesBtn svg:hover {
+  color:var(--blue);
+}
+
+.song-timeline {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  height: 30px;
+}
+
+.music-scrubber {
+  display: block;
+  height:5px;
+  width: 300px;
+  background-color: #444;
+}
+
+.volume-control {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-self: end;
+}
+
+.volume-control .timeline {
+  width: 100px;
+}
+
+.show-hide-playlist-btn {
+  position: absolute;
+  right: 15px;
+  bottom: 124px;
+  padding: .3rem .5rem 0;
+  border-radius: 10px 10px 0 0;
+  border-left: 1px solid #454545;
+  border-top: 1px solid #454545;
+  border-right: 1px solid #454545;
+}
+
+.show-hide-playlist-btn svg {
+  transition: transform 300ms ease-in-out;
+}
+
+.rotate-btn {
+  transform: rotate(180deg);
+}
+
+.current-song {
+  position: absolute;
+  left: 20px;
+  display: flex;
+  gap: 1rem;
+}
+
+.devices-wrap {
+  position: relative;
+  display: flex;
+  justify-self: flex-end;
+  margin-right: 115px;
+}
+
+.device-list {
+  display: none;
+  justify-content: center;
+  text-align: center;
+  background-color: var(--secondary-blue);
+  padding: 1rem 1rem 2rem 1rem;
+  gap: 1rem;
+  position: absolute;
+  bottom: 55px;
+  right: 50%;
+  transform: translateX(50%);
+  list-style: none;
+  z-index: 99;
+  width: 250px;
+  border-radius: 10px;
+  box-shadow: 4px 4px 10px black;
+}
+
+.device-list .triangle {
+  border-top: 8px solid var(--secondary-blue);
+}
+
+.device-list li {
+  cursor: pointer;
+  padding: 1rem;
+  background: var(--primary-blue);
+  border-radius: 5px;
+}
+
+.device-list li:hover {
+  color: var(--blue);
+  background: black;
+}
+
+/*--------Playlist Message---------*/
+
+.playlist-update-message {
+  font-size: .8rem;
+  text-align: center;
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+  background-color: var(--bg-blue);
+  color: white;
+  padding: 1rem;
+  border: 1px solid var(--blue);
+  border-radius: 5px;
+  bottom: 120px;
+  left: 50%;
+  transform: translateX(-50%);
+  transition: opacity 200ms ease-in-out;
+}
+
+.triangle {
+  width: 0; 
+  height: 0; 
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 8px solid var(--blue);
+  position: absolute;
+  bottom:-8px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.show {
+  opacity: 1;
+}
+
+.tooltip {
+  opacity: 0;
+  z-index: 9999;
+  pointer-events: none;
+  display: flex;
+  position: absolute;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--secondary-blue);
+  color: white;
+  border-radius: 5px;
+  top: -35px;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 40px;
+  width: max-content;
+  padding: 0 20px;
+  box-shadow: 0 5px 10px #111;
+  transition: all 200ms ease-in-out;
+}
+
+.playback-wrap * button:hover .tooltip,
+.edit-songlist * button:hover .tooltip {
+  opacity: 1;
+  top: -50px;
+}
