@@ -113,7 +113,7 @@
 
 .timelineSeek:hover .timelineThumb,
 .volumeControl:hover .timelineThumb {
-  background-color: var(--blue);
+  background-color: var(--green);
 }
 
 
@@ -158,35 +158,21 @@
 .nextBtn:hover, .prevBtn:hover,
 .playBtn:hover, .volumeBtn:hover,
 .showHidePlaylistBtn:hover, .devicesBtn svg:hover {
-  color:var(--blue);
+  color:var(--green);
 }
 
-.song-timeline {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  height: 30px;
-}
-
-.music-scrubber {
-  display: block;
-  height:5px;
-  width: 300px;
-  background-color: #444;
-}
-
-.volume-control {
+.volumeControl {
   display: flex;
   gap: 1rem;
   align-items: center;
   justify-self: end;
 }
 
-.volume-control .timeline {
+.volumeControl .timeline {
   width: 100px;
 }
 
-.show-hide-playlist-btn {
+.showHidePlaylistBtn {
   position: absolute;
   right: 15px;
   bottom: 124px;
@@ -197,29 +183,29 @@
   border-right: 1px solid #454545;
 }
 
-.show-hide-playlist-btn svg {
+.showHidePlaylistBtn svg {
   transition: transform 300ms ease-in-out;
 }
 
-.rotate-btn {
+.rotateBtn {
   transform: rotate(180deg);
 }
 
-.current-song {
+.currentSong {
   position: absolute;
   left: 20px;
   display: flex;
   gap: 1rem;
 }
 
-.devices-wrap {
+.devicesWrap {
   position: relative;
   display: flex;
   justify-self: flex-end;
   margin-right: 115px;
 }
 
-.device-list {
+.deviceList {
   display: none;
   justify-content: center;
   text-align: center;
@@ -249,7 +235,7 @@
 }
 
 .device-list li:hover {
-  color: var(--blue);
+  color: var(--green);
   background: black;
 }
 
@@ -264,7 +250,7 @@
   background-color: var(--bg-blue);
   color: white;
   padding: 1rem;
-  border: 1px solid var(--blue);
+  border: 1px solid var(--green);
   border-radius: 5px;
   bottom: 120px;
   left: 50%;
@@ -277,7 +263,7 @@
   height: 0; 
   border-left: 8px solid transparent;
   border-right: 8px solid transparent;
-  border-top: 8px solid var(--blue);
+  border-top: 8px solid var(--green);
   position: absolute;
   bottom:-8px;
   left: 50%;
