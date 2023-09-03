@@ -3,7 +3,13 @@
   line-height: 1.5;
   font-size: 16px;
   font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-  --blue: #1ed760;
+  --green: #1ed760;
+  --img-width: 64px;
+  --img-width-mobile: 60px;
+  --primary-blue:rgb(25 30 35);
+  --secondary-blue:rgb(49 57 70);
+  --bg-blue:rgb(9 12 18);
+  --max-page-width: 1650px;
 }
 
 * { margin: 0px; padding: 0px; border: 0px; box-sizing: border-box; }
