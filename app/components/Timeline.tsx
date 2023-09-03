@@ -4,7 +4,7 @@ import styles from "./styles.module.css"
 
 export default function Timeline({ ...props }) {
 
-  const timelineSeek = (e: Event) => {
+  const timelineSeek = (e: any) => {
     const rect = e.target.getBoundingClientRect();
     const percent: number = Math.min(Math.max(0, e.pageX - rect.x), rect.width) / rect.width;
     // seek requires value in milliseconds
@@ -28,7 +28,7 @@ export default function Timeline({ ...props }) {
       return () => clearInterval(timelineUpdate)
     }
 
-  }, [props.isPaused, props.loading])
+  }, [props.isPaused, props.isLoading])
 
   return (
     <div className={styles.timelineSeek}>
