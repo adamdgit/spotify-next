@@ -1,0 +1,59 @@
+
+.main {
+  display: grid;
+  grid-template-columns: 600px 350px;
+  justify-content: center;
+  align-items: center;
+  gap: 4rem;
+  padding: 2rem;
+  background: linear-gradient(350deg, rgb(22, 22, 22) 30%, rgb(41, 41, 41) 90%);
+  height: 400px;
+}
+
+.main h1 {
+  font-size: 5rem;
+}
+
+.signInText {
+  font-size: 1.5rem;
+  color: #111;
+  margin: 5rem auto 0 auto;
+  width: 80vw;
+  max-width: 800px;
+}
+
+.loginWrap {
+  margin-top: 100px;
+  display: grid;
+  justify-items: center;
+  gap: 2rem;
+  background: white;
+  border-radius: 10px;
+  height: fit-content;
+  color: #111;
+  padding: 2rem;
+  box-shadow: 0px 6px 15px 0 #aaa;
+  transition: all 200ms ease-in-out;
+}
+
+.loginWrap:hover {
+  box-shadow: 0px 6px 15px 0 #ccc;
+  transform: translateY(5px);
+}
+
+.signIn {
+  width: 150px;
+  height: 45px;
+  border-radius: 5px;
+  background: #1ed760;
+  transition: all 200ms ease-in-out;
+}
+
+.signIn:hover {
+  transform: scale(1.2);
+  color: white;
+}
+
+.loginWrap svg {
+  fill: #1ed760;
+}
