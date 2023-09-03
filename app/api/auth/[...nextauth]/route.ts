@@ -4,22 +4,25 @@ import { JWT } from "next-auth/jwt";
 import SpotifyProvider from "next-auth/providers/spotify";
 var SpotifyWebApi = require('spotify-web-api-node');
 
-var spotifyAPI = new SpotifyWebApi({
+export var spotifyAPI = new SpotifyWebApi({
   clientId: process.env.CLIENT_ID,
   clientSecret: process.env.CLIENT_SECRET
 })
 
 async function refreshAccessToken(token: JWT) {
   try {
+    // spotify requires current tokens before providing a refresh token
     spotifyAPI.setAccessToken(token.accessToken);
     spotifyAPI.setRefreshToken(token.refreshToken);
 
+    // request refresh token from spotify
     const { body: refreshToken } = await spotifyAPI.refreshAccessToken();
 
+    // return new refreshed tokens
     return {
       ...token, 
       accessToken: refreshToken.access_token,
-      accessTokenExpired: Date.now() + refreshToken.expires_in * 1000, // 1 hour in milliseconds
+      accessTokenExpiration: Date.now() + refreshToken.expires_in * 1000, // 1 hour in milliseconds
       refreshToken: refreshToken.refresh_token ?? token.refreshToken
     }
   } catch (err) {
