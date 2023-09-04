@@ -60,15 +60,12 @@
 
 .playerControls {
   position: sticky;
-  display: flex;
   height: 125px;
   padding: 1rem;
   bottom: 0;
   background-color: #111;
   border-top: 1px solid #454545;
   z-index: 999;
-  gap: 1rem;
-  justify-content: center;
 }
 
 .playerWrap {
@@ -295,7 +292,7 @@
   transition: all 200ms ease-in-out;
 }
 
-.playback-wrap * button:hover .tooltip,
+.playerWrap * button:hover .tooltip,
 .edit-songlist * button:hover .tooltip {
   opacity: 1;
   top: -50px;
