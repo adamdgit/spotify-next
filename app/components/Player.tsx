@@ -6,20 +6,21 @@ import styles from './styles.module.css'
 import VolumeControl from './VolumeControl';
 import PlaybackDevices from './PlaybackDevices';
 import Timeline from './Timeline';
-import { useSession } from 'next-auth/react';
 import { spotifyAPI } from '../api/auth/[...nextauth]/route';
 import { GlobalStateContext, contextProps } from '../providers';
 import Loading from './Loading';
+import { useSession } from 'next-auth/react';
 
-export default function Player({ ...props }) {
-
-  const session = useSession();
+export default function Player() {
 
   const { setCurrentTrackID } = useContext(GlobalStateContext) as contextProps
   const { setContextID } = useContext(GlobalStateContext) as contextProps
   const { setContextURI } = useContext(GlobalStateContext) as contextProps
+  const { setDeviceId } = useContext(GlobalStateContext) as contextProps
   // playlist update message
   const { setMessage } = useContext(GlobalStateContext) as contextProps
+
+  const session = useSession();
 
   const [isPaused, setIsPaused] = useState(true);
   const [player, setPlayer] = useState(undefined);
@@ -34,15 +35,13 @@ export default function Player({ ...props }) {
 
   function handlePlayPause() {
     setIsPaused(!isPaused);
-    if (isPaused) {
-      spotifyAPI.play();
-    } else {
-      spotifyAPI.pause();
-    }
+    isPaused ? spotifyAPI.play() : spotifyAPI.pause();
   }
 
+  // setup webplayback sdk on mount
   useEffect(() => {
 
+    if (!session.data?.accessToken) return
     const script = document.createElement("script")
     script.src = "https://sdk.scdn.co/spotify-player.js"
     script.async = true
@@ -52,7 +51,7 @@ export default function Player({ ...props }) {
     window.onSpotifyWebPlaybackSDKReady = () => {
       const player = new window.Spotify.Player({
           name: 'React Webplayer',
-          getOAuthToken: cb => { cb(props.accessToken); },
+          getOAuthToken: cb => { cb(session.data.accessToken); },
           volume: volumeLS
       })
 
@@ -61,13 +60,14 @@ export default function Player({ ...props }) {
       player.addListener('ready', ({ device_id }) => {
         console.log('Ready with Device ID', device_id);
         spotifyAPI.transferMyPlayback([device_id]);
+        setDeviceId(device_id);
       })
 
       player.addListener('not_ready', ({ device_id }) => {
         console.log('Device ID has gone offline', device_id);
       })
 
-      player.connect()
+      player.connect( )
 
       player.addListener('player_state_changed', ( state => {
         if (!state) return
@@ -87,12 +87,12 @@ export default function Player({ ...props }) {
         setContextID(state.context.uri?.split(":").pop())
       }))
     }
-  }, [])
+  }, [session])
 
   return (
     <>
     {
-      isLoading ? <Loading loadingMsg={"connecting player..."}/>
+      !playerIsReady ? <Loading loadingMsg={"connecting player..."}/>
       :
       <div className={styles.playerControls}>
       <div className={styles.playerWrap}>
