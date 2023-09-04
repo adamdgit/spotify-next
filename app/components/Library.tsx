@@ -33,7 +33,7 @@ export default function Library() {
       <ul className={styles.playlists}>
         {
           usersPlaylists.map((item, index) => (
-            <li key={index}>
+            <li key={index} onClick={() => spotifyAPI.play({'context_uri': item.uri})}>
               <p>{item?.name}</p>
               <img src={item.images[1].url} alt={item.name + 'playlist art'} />
             </li>
