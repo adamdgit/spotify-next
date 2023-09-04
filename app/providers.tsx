@@ -14,8 +14,8 @@ export type messageProps = {
 }
 
 export type contextProps = {
-  accessToken: string,
-  setAccessToken: Dispatch<SetStateAction<string>>,
+  deviceId: string,
+  setDeviceId: Dispatch<SetStateAction<string>>,
   usersPlaylists: never[] | [],
   setUsersPlaylists: Dispatch<SetStateAction<never[]>>,
   username: string,
@@ -40,7 +40,7 @@ export const GlobalStateContext = createContext<contextProps | null>(null);
 
 export default function Providers({ children } : AuthProps) {
 
-  const [accessToken, setAccessToken] = useState('');
+  const [deviceId, setDeviceId] = useState('');
   const [usersPlaylists, setUsersPlaylists] = useState([]);
   const [currentTrackID, setCurrentTrackID] = useState('');
   const [contextURI, setContextURI] = useState(''); // album, playlist etc
@@ -55,7 +55,7 @@ export default function Providers({ children } : AuthProps) {
   return (
       <SessionProvider>
         <GlobalStateContext.Provider value={{
-          accessToken, setAccessToken,
+          deviceId, setDeviceId,
           usersPlaylists, setUsersPlaylists,
           username, setUsername, 
           userID, setUserID, 
