@@ -5,7 +5,8 @@ import { useContext, useEffect, useState } from "react";
 import { GlobalStateContext, contextProps } from "../providers";
 import { spotifyAPI } from "../api/auth/[...nextauth]/route";
 import styles from './styles.module.css'
-import dominantColour from "../utils/dominantColour";
+import PlaylistItem from "./PlaylistItem";
+import AlbumItem from "./AlbumItem";
 
 type rgbProps = {
   r: number,
@@ -17,6 +18,7 @@ export default function Library() {
 
   const { data: session } = useSession();
   const { usersPlaylists, setUsersPlaylists } = useContext(GlobalStateContext) as contextProps
+  const [albums, setAlbums] = useState([]);
   const [bgColour, setBgColour] = useState<rgbProps>({ r: 55, g: 55, b: 55 });
 
   useEffect(() => {
@@ -25,33 +27,52 @@ export default function Library() {
 
     const getPlaylists = async () => {
       const data = await spotifyAPI.getUserPlaylists();
-      setUsersPlaylists(data.body.items);
-      console.log(data)
+      // filter playlists by owned first, followed second
+      setUsersPlaylists(data.body.items.sort((a, b) => {
+        if(a.owner.id === session.userId && b.owner.id === session.userId) return 0
+        if(a.owner.id === session.userId && b.owner.id !== session.userId) return -1
+        return 1
+      }))
     }
     getPlaylists()
+      .catch(err => console.error(err))
+
+    const getAlbums = async () => {
+      const data = await spotifyAPI.getMySavedAlbums({limit: 1, offset: 0});
+      setAlbums(data.body.items)
+    }
+    getAlbums()
       .catch(err => console.error(err))
 
   },[session])
 
   return (
     <main className={styles.mainContent} style={{background: `rgb(${bgColour.r} ${bgColour.g} ${bgColour.b})`}}>
+      
       <h1>Your Library</h1>
-
       <ul className={styles.playlists}>
         {
         usersPlaylists.map((item, index) => (
-          <li key={index} 
-            className={styles.playlistItem}
-            onClick={() => spotifyAPI.play({'context_uri': item.uri})}>
-            <img 
-              width={200}
-              height={200}
-              onMouseEnter={() => dominantColour(item.images[1].url, setBgColour)} 
-              src={item.images[1].url} 
-              alt={item.name + 'playlist art'} />
-              <span>{item?.description}</span>
-              <span>{item?.name}</span>
-          </li>
+          <PlaylistItem 
+            key={index}
+            session={session}
+            item={item} 
+            index={index} 
+            setBgColour={setBgColour} />
+        ))
+        }
+      </ul>
+
+      <h2>Saved Albums</h2>
+      <ul className={styles.playlists}>
+        {
+        albums.map((item, index) => (
+          <AlbumItem 
+            key={index}
+            session={session}
+            item={item} 
+            index={index} 
+            setBgColour={setBgColour} />
         ))
         }
       </ul>
