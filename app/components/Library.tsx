@@ -1,43 +1,58 @@
 'use client'
 
 import { useSession } from "next-auth/react";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { GlobalStateContext, contextProps } from "../providers";
 import { spotifyAPI } from "../api/auth/[...nextauth]/route";
 import styles from './styles.module.css'
+import dominantColour from "../utils/dominantColour";
+
+type rgbProps = {
+  r: number,
+  g: number,
+  b: number
+}
 
 export default function Library() {
 
   const { data: session } = useSession();
   const { usersPlaylists, setUsersPlaylists } = useContext(GlobalStateContext) as contextProps
+  const [bgColour, setBgColour] = useState<rgbProps>({ r: 55, g: 55, b: 55 });
 
-  async function getPlaylists() {
-    if (session?.accessToken) {
+  useEffect(() => {
+
+    if (!session) return
+
+    const getPlaylists = async () => {
       const data = await spotifyAPI.getUserPlaylists();
       setUsersPlaylists(data.body.items);
       console.log(data)
-    } else {
-      console.error("no access token");
     }
-  }
+    getPlaylists()
+      .catch(err => console.error(err))
 
-  useEffect(() => {
-    if (!session) return
-    getPlaylists();
   },[session])
 
   return (
-    <main className={styles.mainContent}>
-      <h1>Welcome {session?.user?.name}</h1>
+    <main className={styles.mainContent} style={{background: `rgb(${bgColour.r} ${bgColour.g} ${bgColour.b})`}}>
+      <h1>Your Library</h1>
 
       <ul className={styles.playlists}>
         {
-          usersPlaylists.map((item, index) => (
-            <li key={index} onClick={() => spotifyAPI.play({'context_uri': item.uri})}>
-              <p>{item?.name}</p>
-              <img src={item.images[1].url} alt={item.name + 'playlist art'} />
-            </li>
-          ))
+        usersPlaylists.map((item, index) => (
+          <li key={index} 
+            className={styles.playlistItem}
+            onClick={() => spotifyAPI.play({'context_uri': item.uri})}>
+            <img 
+              width={200}
+              height={200}
+              onMouseEnter={() => dominantColour(item.images[1].url, setBgColour)} 
+              src={item.images[1].url} 
+              alt={item.name + 'playlist art'} />
+              <span>{item?.description}</span>
+              <span>{item?.name}</span>
+          </li>
+        ))
         }
       </ul>
     </main>
