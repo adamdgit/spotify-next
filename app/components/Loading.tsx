@@ -1,8 +1,5 @@
-type loadingProps = {
-  loadingMsg: string
-}
 
-export default function Loading(props: loadingProps) {
+export default function Loading({ ...props }) {
   return (
     <span className="loading">
       <p>{props.loadingMsg}</p>
