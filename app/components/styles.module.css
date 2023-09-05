@@ -1,18 +1,67 @@
 
+/* main content */
 .mainContent {
+  z-index: 5;
+  position: relative;
   padding: 2rem;
-  background: linear-gradient(0deg, #111, #222);
+  background: #222;
+  transition: all 350ms ease-in-out;
+}
+
+.mainContent::after {
+  z-index: -1;
+  pointer-events: none;
+  position: absolute;
+  content: "";
+  background: linear-gradient(0deg, rgba(0,0,0,1), rgba(0,0,0,0));
+  top: 0;
+  left: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.homeItemList {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 300px);
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.homeItem {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  background: var(--black);
+  border: 1px solid #333;
+  border-radius: 0 10px 10px 0;
+}
+
+.homeItem:hover {
+  background: var(--gray-green);
 }
 
 .playlists {
+  position: relative;
   margin-top: 3rem;
   display: grid;
-  grid-template-columns: repeat(auto-fill, 300px);
-  gap: 2rem;
+  grid-template-columns: repeat(auto-fill, 200px);
+  gap: 3rem;
   justify-content: center;
 }
 
+.playlistItem {
+  display: grid;
+  align-items: center;
+  justify-items: center;
+}
+
+/* Header */
 .header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -43,7 +92,44 @@
 }
 
 .header ul li a:hover > svg {
-  fill: #1ed760;
+  fill: var(--green);
+}
+
+.navActive svg {
+  fill: var(--green);
+}
+
+.profile {
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  height: 40px;
+  border-radius: 40px;
+  background: var(--gray-green);
+}
+
+.nameWrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: .8rem;
+  width: fit-content;
+  padding-inline: 15px;
+}
+
+.profileContents {
+  position: absolute;
+  pointer-events: none;
+  opacity: 0;
+  display: none;
+  top: 45px;
+  right: 0;
+  height: 200px;
+  width: 150px;
+  background: var(--gray-green);
 }
 
 .signOut {
@@ -53,7 +139,13 @@
 }
 
 .signOut:hover {
-  background: #1ed760;
+  background: var(--green);
+}
+
+.showElement {
+  display: block;
+  opacity: 1;
+  pointer-events: all;
 }
 
 /*  Player styles */
@@ -206,7 +298,7 @@
   display: none;
   justify-content: center;
   text-align: center;
-  background-color: var(--secondary-blue);
+  background-color: var(--gray-green);
   padding: 1rem 1rem 2rem 1rem;
   gap: 1rem;
   position: absolute;
@@ -221,7 +313,7 @@
 }
 
 .device-list .triangle {
-  border-top: 8px solid var(--secondary-blue);
+  border-top: 8px solid var(--gray-green);
 }
 
 .device-list li {
@@ -279,7 +371,7 @@
   position: absolute;
   justify-content: center;
   align-items: center;
-  background-color: var(--secondary-blue);
+  background-color: var(--gray-green);
   color: white;
   border-radius: 5px;
   top: -35px;
