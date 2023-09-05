@@ -9,7 +9,7 @@ type rgbProps = {
 // cheap way to get dominant colour from image by converting image to 1px canvas
 export default function getDominantColours(imgUrl: string, setBgColour: Dispatch<SetStateAction<rgbProps>>) {
 
-  const size = 1;
+  const size = 4;
   const image = new Image();
   const canvas = document.createElement("canvas");
   document.body.appendChild(canvas);
@@ -19,6 +19,8 @@ export default function getDominantColours(imgUrl: string, setBgColour: Dispatch
     g: 55,
     b: 55
   }
+
+  const values: string[] = [];
 
   canvas.height = size;
   canvas.width = size;
@@ -30,19 +32,59 @@ export default function getDominantColours(imgUrl: string, setBgColour: Dispatch
   image.onload = () => {
   
     // load image and create from imgurl
-    ctx!.drawImage(image, 0, 0, 1, 1)
+    ctx!.drawImage(image, 0, 0, size, size)
 
-    const imageData = ctx!.getImageData(0, 0, 1, 1)
-    // blue value to be fixed at 55, remove alpha
-    fixedColour.r = imageData.data[0];
-    fixedColour.g = imageData.data[1];
-    fixedColour.b = 55;
+    const imageData = ctx!.getImageData(0, 0, size, size)
+
+    for (let i = 0; i < imageData.data.length; i+=8) {
+      const rgb = 
+      leftPad(imageData.data[i]) + 
+      leftPad(imageData.data[i + 1]) + 
+      leftPad(imageData.data[i + 2])
+      
+      values.push(rgb)
+    }
+
+    // get most occuring value
+    const mostOccuring = mode(values).match(/.{1,3}/g)
+
+    // split into 3 sections, remove starting zeroes
+    fixedColour.r = mostOccuring[0]
+    fixedColour.g = mostOccuring[1]
+    fixedColour.b = mostOccuring[2]
 
     setBgColour(fixedColour)
   }
-
   // delete elements
   image.remove();
   canvas.remove();
 
+}
+
+function leftPad(num: number): string {
+  if (num < 10) return num.toString().padStart(3, "00")
+  if (num < 100 && num > 9) return num.toString().padStart(3, "0")
+  return num.toString();
+}
+
+function mode(array)
+{
+    if(array.length == 0)
+        return null;
+    var modeMap = {};
+    var maxEl = array[0], maxCount = 1;
+    for(var i = 0; i < array.length; i++)
+    {
+        var el = array[i];
+        if(modeMap[el] == null)
+            modeMap[el] = 1;
+        else
+            modeMap[el]++;  
+        if(modeMap[el] > maxCount)
+        {
+            maxEl = el;
+            maxCount = modeMap[el];
+        }
+    }
+    return maxEl.toString();
 }
