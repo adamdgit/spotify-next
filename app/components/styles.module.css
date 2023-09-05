@@ -46,15 +46,52 @@
   position: relative;
   margin-top: 3rem;
   display: grid;
-  grid-template-columns: repeat(auto-fill, 200px);
-  gap: 3rem;
+  grid-template-columns: repeat(auto-fill, minmax(480px, 1fr));
+  gap: 2rem;
   justify-content: center;
 }
 
 .playlistItem {
+  position: relative;
   display: grid;
+  grid-template-columns: 200px auto;
   align-items: center;
-  justify-items: center;
+  background: var(--black);
+  border-radius: 15px;
+  gap: 1rem;
+  border: 1px solid #333;
+}
+
+.playlistItem button {
+  width: fit-content;
+  padding: 10px 20px;
+  background: var(--gray-green);
+  color: white;
+}
+
+.playlistItem button:hover {
+  background: var(--green);
+}
+
+.playlistItem p, .playlistItem h2 { 
+  overflow: hidden;
+  display: -webkit-box;
+  line-clamp: 3;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  height: fit-content;
+}
+
+.resultInfo {
+  display: grid;
+  grid-template-rows: max-content 1fr auto;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.resultBtns {
+  display: flex;
+  gap: 1rem;
 }
 
 /* Header */
