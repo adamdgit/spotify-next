@@ -30,17 +30,17 @@ export default function getDominantColours(imgUrl: string, setBgColour: Dispatch
 
   // after image loads, draw to canvas as 1 pixel and get rgba values
   image.onload = () => {
-  
+
     // load image and create from imgurl
     ctx!.drawImage(image, 0, 0, size, size)
 
     const imageData = ctx!.getImageData(0, 0, size, size)
 
-    for (let i = 0; i < imageData.data.length; i+=8) {
+    for (let i = 0; i < imageData.data.length; i+=4) {
       const rgb = 
-      leftPad(imageData.data[i]) + 
-      leftPad(imageData.data[i + 1]) + 
-      leftPad(imageData.data[i + 2])
+      leftPad(Math.floor(imageData.data[i] / 5) * 5) + 
+      leftPad(Math.floor(imageData.data[i + 1] / 5) * 5) + 
+      leftPad(Math.floor(imageData.data[i + 2] / 5) * 5)
       
       values.push(rgb)
     }
@@ -49,9 +49,9 @@ export default function getDominantColours(imgUrl: string, setBgColour: Dispatch
     const mostOccuring = mode(values).match(/.{1,3}/g)
 
     // split into 3 sections, remove starting zeroes
-    fixedColour.r = mostOccuring[0]
-    fixedColour.g = mostOccuring[1]
-    fixedColour.b = mostOccuring[2]
+    fixedColour.r = Number(mostOccuring[0])
+    fixedColour.g = Number(mostOccuring[1])
+    fixedColour.b = Number(mostOccuring[2])
 
     setBgColour(fixedColour)
   }
@@ -67,10 +67,9 @@ function leftPad(num: number): string {
   return num.toString();
 }
 
-function mode(array)
-{
+function mode(array: string[]): string {
     if(array.length == 0)
-        return null;
+        return "";
     var modeMap = {};
     var maxEl = array[0], maxCount = 1;
     for(var i = 0; i < array.length; i++)
