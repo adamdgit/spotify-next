@@ -1,17 +1,20 @@
 'use client'
 
+import { useRouter } from "next/navigation";
 import { spotifyAPI } from "../api/auth/[...nextauth]/route";
 import dominantColour from "../utils/dominantColour";
 import styles from "./styles.module.css"
 
 export default function PlaylistItem({  ...props }) {
 
+  const router = useRouter();
+
   return (
     <li 
       onMouseEnter={() => dominantColour(props.item.images[1].url, props.setBgColour)} 
-      className={styles.playlistItem}
-      onClick={() => spotifyAPI.play({'context_uri': props.item.uri})}>
+      className={styles.playlistItem}>
       <img 
+        onClick={() => spotifyAPI.play({'context_uri': props.item.uri})}
         width={200}
         height={200}
         src={props.item.images[1].url} 
@@ -27,7 +30,11 @@ export default function PlaylistItem({  ...props }) {
               </button>
             : 
             <span className={styles.resultBtns}>
-              <button className={styles.editLink}>Edit</button>
+              <button 
+                onClick={() => router.push(`/editplaylist/${props.item.id}`)}
+                className={styles.editLink}>
+                Edit
+              </button>
               <button onClick={() => spotifyAPI.unfollowPlaylist(props.item.id)}>
                   Delete
               </button>
