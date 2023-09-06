@@ -1,3 +1,5 @@
+import Header from './components/Header'
+import Player from './components/Player'
 import './globals.css'
 import Providers from './providers'
 
@@ -16,7 +18,9 @@ export default function RootLayout({
     <html lang="en">
       <Providers>
         <body>
+          <Header />
           {children}
+          <Player />
         </body>
       </Providers>
     </html>
