@@ -10,9 +10,9 @@ export default function AlbumItem({  ...props }) {
   return (
     <li 
       onMouseEnter={() => dominantColour(props.item.album.images[1].url, props.setBgColour)} 
-      className={styles.playlistItem}
-      onClick={() => spotifyAPI.play({'context_uri': props.item.uri})}>
+      className={styles.playlistItem}>
       <img 
+        onClick={() => spotifyAPI.play({'context_uri': props.item.album.uri})}
         width={200}
         height={200}
         src={props.item.album.images[1].url} 
