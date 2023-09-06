@@ -44,7 +44,7 @@
 
 .playlists {
   position: relative;
-  margin-top: 3rem;
+  margin-block: 2rem;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(480px, 1fr));
   gap: 2rem;
@@ -57,7 +57,7 @@
   grid-template-columns: 200px auto;
   align-items: center;
   background: var(--black);
-  border-radius: 15px;
+  border-radius: 0 15px 15px 0;
   gap: 1rem;
   border: 1px solid #333;
 }
@@ -129,6 +129,10 @@
 }
 
 .header ul li a:hover > svg {
+  fill: var(--green);
+}
+
+.header ul li a:active {
   fill: var(--green);
 }
 
