@@ -9,7 +9,7 @@ type rgbProps = {
 // cheap way to get dominant colour from image by converting image to 1px canvas
 export default function getDominantColours(imgUrl: string, setBgColour: Dispatch<SetStateAction<rgbProps>>) {
 
-  const size = 4;
+  const SIZE = 4;
   const image = new Image();
   const canvas = document.createElement("canvas");
   document.body.appendChild(canvas);
@@ -22,33 +22,34 @@ export default function getDominantColours(imgUrl: string, setBgColour: Dispatch
 
   const values: string[] = [];
 
-  canvas.height = size;
-  canvas.width = size;
+  canvas.height = SIZE;
+  canvas.width = SIZE;
   image.src = imgUrl;
   // allow cross origin url
   image.crossOrigin = "Anonymous"
 
-  // after image loads, draw to canvas as 1 pixel and get rgba values
+  // after image loads, draw to canvas as SIZE pixel and get rgba values
   image.onload = () => {
-
     // load image and create from imgurl
-    ctx!.drawImage(image, 0, 0, size, size)
+    ctx!.drawImage(image, 0, 0, SIZE, SIZE)
 
-    const imageData = ctx!.getImageData(0, 0, size, size)
+    const imageData = ctx!.getImageData(0, 0, SIZE, SIZE)
 
     for (let i = 0; i < imageData.data.length; i+=4) {
+      // floor results to try get more overlap on colours, colours dont need to be perfect
+      // add 0's to numbers less than 100, so we know how to split into rbg later on
+      // eg: 15, 55, 155 = 015055155, can be split into [015, 055, 155] and used as rgb
       const rgb = 
       leftPad(Math.floor(imageData.data[i] / 5) * 5) + 
       leftPad(Math.floor(imageData.data[i + 1] / 5) * 5) + 
       leftPad(Math.floor(imageData.data[i + 2] / 5) * 5)
-      
       values.push(rgb)
     }
 
-    // get most occuring value
+    // return most occuring colour, split into an array that is 3 numbers long each
     const mostOccuring = mode(values).match(/.{1,3}/g)
 
-    // split into 3 sections, remove starting zeroes
+    // save most occuring rgb values
     fixedColour.r = Number(mostOccuring[0])
     fixedColour.g = Number(mostOccuring[1])
     fixedColour.b = Number(mostOccuring[2])
