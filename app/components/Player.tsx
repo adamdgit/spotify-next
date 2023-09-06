@@ -89,12 +89,14 @@ export default function Player() {
     }
   }, [session])
 
+  if (!session.data?.accessToken) return <></>
+
   return (
     <>
-    {
-      !playerIsReady ? <Loading loadingMsg={"connecting player..."}/>
-      :
       <div className={styles.playerControls}>
+      {
+      !playerIsReady ? <Loading loadingMsg={"Connecting Spotify Player..."}/>
+      :
         <div className={styles.playerWrap}>
 
           <Timeline
@@ -177,8 +179,8 @@ export default function Player() {
           <PlaybackDevices />
 
         </div>
+      }
       </div>
-    }
     </>
   )
 }
