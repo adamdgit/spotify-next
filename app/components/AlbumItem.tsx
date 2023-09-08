@@ -3,7 +3,7 @@
 import { spotifyAPI } from "../api/auth/[...nextauth]/route";
 import dominantColour from "../utils/dominantColour";
 import styles from "./styles.module.css"
-import { sanitizeArtistNames } from "../utils/sanitizeArtistNames"
+import { convertNamesToString } from "../utils/convertNamesToString"
 
 export default function AlbumItem({  ...props }) {
 
@@ -13,16 +13,15 @@ export default function AlbumItem({  ...props }) {
       className={styles.playlistItem}>
       <img 
         onClick={() => spotifyAPI.play({'context_uri': props.item.album.uri})}
-        width={200}
-        height={200}
+        width={150}
+        height={150}
         src={props.item.album.images[1].url} 
         alt={props.item.name + 'playlist art'} />
 
-      <span className="result-info">
+      <span className={styles.resultInfo}>
         <h2>{props.item.album.name}</h2>
-        <p>{sanitizeArtistNames(props.item.album.artists)}</p>
+        <p>{convertNamesToString(props.item.album.artists)}</p>
         <button 
-          className="remove" 
           onClick={() => spotifyAPI.removeFromMySavedAlbums(props.item.album.id)}>
           Remove
         </button>
