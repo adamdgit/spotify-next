@@ -15,8 +15,8 @@ export default function PlaylistItem({  ...props }) {
       className={styles.playlistItem}>
       <img 
         onClick={() => spotifyAPI.play({'context_uri': props.item.uri})}
-        width={200}
-        height={200}
+        width={150}
+        height={150}
         src={props.item.images[1].url} 
         alt={props.item.name + 'playlist art'} />
 
@@ -31,7 +31,7 @@ export default function PlaylistItem({  ...props }) {
             : 
             <span className={styles.resultBtns}>
               <button 
-                onClick={() => router.push(`/editplaylist/${props.item.id}`)}
+                onClick={() => router.push(`/editplaylist/${encodeURIComponent(props.item.id)}`)}
                 className={styles.editLink}>
                 Edit
               </button>
