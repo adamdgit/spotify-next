@@ -4,7 +4,7 @@
   z-index: 5;
   position: relative;
   padding: 2rem;
-  background: #222;
+  background: var(--gray-green);
   transition: all 350ms ease-in-out;
 }
 
@@ -26,7 +26,7 @@
   grid-template-columns: repeat(auto-fill, 300px);
   justify-content: center;
   gap: 1rem;
-  margin-bottom: 2rem;
+  margin-block: 2rem;
 }
 
 .homeItem {
@@ -54,7 +54,7 @@
 .playlistItem {
   position: relative;
   display: grid;
-  grid-template-columns: 200px auto;
+  grid-template-columns: 150px auto;
   align-items: center;
   background: var(--black);
   border-radius: 0 15px 15px 0;
@@ -64,7 +64,7 @@
 
 .playlistItem button {
   width: fit-content;
-  padding: 10px 20px;
+  padding: 8px 15px;
   background: var(--gray-green);
   color: white;
 }
@@ -85,7 +85,7 @@
 .resultInfo {
   display: grid;
   grid-template-rows: max-content 1fr auto;
-  gap: 1rem;
+  gap: .7rem;
   padding: 1rem;
 }
 
@@ -192,19 +192,25 @@
 /*  Player styles */
 
 .playerControls {
-  position: sticky;
+  position: fixed;
+  display: flex;
   height: 125px;
+  width: 100%;
   padding: 1rem;
   bottom: 0;
   background-color: #111;
   border-top: 1px solid #454545;
   z-index: 999;
+  gap: 1rem;
+  justify-content: center;
 }
 
 .playerWrap {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 1fr 1fr;
+  max-width: var(--max-page-width);
+  width: 100%;
 }
 
 /*-----Timeline styles-----*/
@@ -360,7 +366,7 @@
 .device-list li {
   cursor: pointer;
   padding: 1rem;
-  background: var(--primary-blue);
+  background: var(--gray-green);
   border-radius: 5px;
 }
 
@@ -429,4 +435,409 @@
 .edit-songlist * button:hover .tooltip {
   opacity: 1;
   top: -50px;
+}
+
+/*  Loading spinner  */
+.loading {
+  display: grid;
+  place-items: center;
+}
+
+.reactLogo {
+  animation: rotate 6s linear infinite;
+}
+
+@keyframes rotate {
+  from {transform: rotate(0deg);}
+  to {transform: rotate(360deg);}
+}
+
+@keyframes loading {
+  0% {opacity: .3;}
+  50% {opacity: .9;}
+  100% {opacity: .3;}
+}
+
+/* Edit playlist section */
+
+.playlistWrap {
+  position: fixed;
+  top: 96px;
+  display: grid;
+  grid-template-columns: 47% 53%;
+  height: 100vh;
+  width: 100%;
+  transition: transform 400ms ease-in-out;
+  background-color: var(--gray-green);
+}
+
+.hidden {
+  display: none;
+}
+
+.hide {
+  transform: translateY(100vh);
+}
+
+.songCategory {
+  display: grid;
+  grid-template-columns: 40px 80px auto 60px;
+  justify-self: center;
+  width: 100%;
+  max-width: 1000px;
+  height: 50px;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--gray-green);
+  background: linear-gradient(180deg, var(--gray-green), var(--bg-blue));
+  padding: 1.2rem .7rem;
+  margin-bottom: 1rem;
+  font-size: .6rem;
+}
+
+.playlist {
+  background-color: var(--gray-green);
+  overflow-y: auto;
+  border-top: 3px solid var(--gray-green);
+  padding: 2rem;
+  height: calc(100vh - 215px);
+  display: grid;
+}
+
+.playlistInfoWrap {
+  display: grid;
+  grid-template-columns: max-content auto;
+  align-items: center;
+  justify-self: center;
+  gap: 2rem;
+  padding: 2rem 0;
+  width: 100%;
+  max-width: 1000px;
+}
+
+.playlistInfoWrap span {
+  display: grid;
+  gap: 1rem;
+  overflow: hidden;
+  width: inherit;
+  max-height: 350px;
+}
+
+.playlistInfoWrap span > * {
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.playlistArt {
+  min-width: 150px;
+  max-width: 220px;
+  aspect-ratio: 1;
+  box-shadow: 4px 4px 10px #111;
+}
+
+.container {
+  position: relative;
+  justify-self: center;
+  max-width: 1000px;
+  width: 100%;
+}
+
+.draggable, .editDraggable {
+  position: relative;
+  background-color: var(--gray-green);
+  margin: 5px 0;
+  width: 100%;
+  max-width: 1200px;
+  height: 100px;
+  display: grid;
+  grid-template-columns: 18px 80px auto 40px 40px;
+  align-items: center;
+  justify-items: center;
+  padding: 10px;
+  gap: 10px;
+}
+
+.draggable:hover, .editDraggable:hover {
+  background-color: var(--bg-blue);
+}
+
+.draggable h1, .editDraggable h1 {
+  font-size: 1rem;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.draggable p, .editDraggable p {
+  font-size: .8rem;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.draggable img, .editDraggable img {
+  width: var(--img-width);
+  height: var(--img-width);
+}
+
+.draggable img:hover { cursor: pointer; }
+
+.songLength { font-size: .8rem; }
+
+.draggableTrackname {
+  display: grid;
+  gap: 1rem;
+  width: 100%;
+}
+
+.playSongBtn {
+  width: var(--img-width);
+  height: var(--img-width);
+}
+
+.playSongBtn .tooltip {
+  left: -5px;
+  top: 30px;
+  font-size: .9rem;
+}
+
+.playSongBtn:hover .tooltip {
+  opacity: 1;
+  left: 8px;
+}
+
+.removeTrackBtn {
+  position: relative;
+  color: white;
+  background: none;
+  margin: 6px 4px 4px 4px;
+}
+
+.removeTrackBtn:hover {
+  color: rgb(216, 0, 0);
+}
+
+/*--edit-draggables--*/
+
+.editDraggable {
+  grid-template-columns: 18px 80px auto 40px max-content max-content;
+  justify-self: center;
+  padding-right: 20px;
+  cursor: unset;
+}
+
+.editDraggable .dragIcon {
+  position: relative;
+  height: 25px;
+  width: 25px;
+  cursor: move;
+  margin: 5px;
+}
+
+.dragIcon svg{
+  pointer-events: none;
+  fill: white;
+  background-color: var(--gray-green);
+}
+
+.dragIcon:hover svg{
+  fill: var(--green);
+}
+
+.editDraggable:hover .dragIcon svg {
+  background-color: var(--bg-blue);
+}
+
+/* Lyrics section */
+.song-wrap {
+  overflow-y: scroll;
+  border-top: 3px solid var(--gray-green);
+  background-color: var(--bg-blue);
+  height: calc(100vh - 215px);
+}
+
+.lyrics-wrap {
+  width: calc(100% - 80px);
+  min-width: 350px;
+  max-width: 800px;
+  margin: -100px auto 2rem;
+  background-color: var(--gray-green);
+  padding: 2rem;
+  z-index: 100;
+  box-shadow: 0 0 12px #111;
+  display: grid;
+  justify-content: center;
+  text-align: center;
+}
+
+.lyrics-title {
+  margin-bottom: 20px;
+}
+
+.lyrics-wrap a {
+  color: var(--green);
+  text-decoration: none;
+}
+
+.song-info {
+  display: grid;
+  justify-items: center;
+  gap: 2rem;
+  padding: 3rem 3rem 9rem;
+  margin-bottom: 20px;
+  background-color: var(--gray-green);
+  z-index: 90;
+}
+
+.album-large {
+  width: 100%;
+  min-width: 150px;
+  max-width: 350px;
+}
+
+.song-info h2 { text-align: center; margin: 1rem 0; }
+
+.song-info ul { display: grid; gap: 1rem; }
+
+.song-info ul li { display: grid; grid-template-columns: 110px 1fr; }
+
+.song-info ul li h3 { width: 120px; }
+
+/*-----Drag & Drop-----*/
+
+.clone {
+  position: absolute;
+  transform: translate(var(--x), var(--y));
+  z-index:999;
+  background-color: var(--bg-blue);
+}
+
+.selected { border: 1px solid var(--green); }
+
+.editPlaylistWrap {
+  display: flex;
+  align-items: center;
+  gap: 3rem;
+  margin-bottom: 3rem;
+}
+
+.editPlaylistCoverImg {
+  width: 300px;
+  box-shadow: 3px 3px 15px #111;
+}
+
+.editPlaylistDetails {
+  display: grid;
+  gap: 2rem;
+}
+
+.userPlaylistsHeader {
+  display: flex;
+  align-items: center;
+  margin-bottom: 2rem;
+  gap: 2rem;
+}
+
+.userPlaylistsHeader button {
+  width: 140px;
+  height: 50px;
+}
+
+.editPlaylist {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 3rem;
+  align-items: center;
+  margin: 3rem 0;
+}
+
+.editPlaylist img {
+  width: 300px;
+  height: 300px;
+  box-shadow: 3px 3px 12px black;
+}
+
+.userInputWrap {
+  position: relative;
+  display: grid;
+  grid-template-rows:repeat(4, 55px) ;
+  gap: .8rem;
+  width: 100%;
+  align-items: center;
+}
+
+.errorTooltip {
+  opacity: 0;
+  pointer-events: none;
+  display: flex;
+  position: absolute;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(204, 74, 74);
+  color: white;
+  border-radius: 5px;
+  top: -35px;
+  left: 278px;
+  transform: translateX(-50%);
+  height: 40px;
+  width: max-content;
+  padding: 0 20px;
+  box-shadow: 0 5px 10px #111;
+  transition: all 200ms ease-in-out;
+}
+
+.editInput {
+  background-color: var(--gray-green);
+  border: 1px solid var(--gray-green);
+  color: white;
+  box-shadow: inset 3px 3px 5px #111;
+  width: 100%;
+  min-width: 200px;
+  max-width: 500px;
+  height: 40px;
+  padding: 0 10px;
+}
+
+.editInput:hover, .editInput:focus-visible {
+  border: 1px solid var(--green);
+  outline: unset;
+}
+
+/*-----Edit playlist page---------*/
+
+.searchSongsWrap {
+  display: grid;
+  gap: 2rem;
+  margin: 3rem auto 0 auto;
+  max-width: var(--max-page-width);
+  z-index: 1;
+}
+
+.changeDetails {
+  display: grid;
+  grid-template-columns: 130px 1fr;
+  gap: 1rem;
+  align-items: center;
+}
+
+.editSonglist {
+  display: grid;
+  position: relative;
+  transition: transform 400ms cubic-bezier(.17,.67,.07,.94);
+  background: var(--gray-green);
+  max-width: 1200px;
+  margin: 0 auto;
+  z-index: 2;
+}
+
+.editHeading {
+  margin: 1rem 0 3rem;
+  padding: 1rem;
+  box-shadow: 3px 3px 10px #111;
+  background-color: var(--black);
+}
+
+.saveChanges {
+  justify-self: flex-start;
+  width: 150px;
+  height: 60px;
 }
