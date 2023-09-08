@@ -1,20 +1,29 @@
 'use client'
 
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useMemo, useState } from 'react'
 import { spotifyAPI } from '../api/auth/[...nextauth]/route';
 import { useSession } from 'next-auth/react';
 import styles from "../components/styles.module.css"
 import { GlobalStateContext, contextProps } from '../providers';
+import SmallItem from '../components/SmallItem';
 
 export default function Home() {
   
-  const session = useSession();
+  const { data: session} = useSession();
   const [topArtists, setTopArtists] = useState([])
   const { usersPlaylists, setUsersPlaylists } = useContext(GlobalStateContext) as contextProps
-  
+
+  const sortedPlaylists = useMemo(() => {
+    return usersPlaylists.sort((a, b) => {
+      if(a.owner.id === session.userId && b.owner.id === session.userId) return 0
+      if(a.owner.id === session.userId && b.owner.id !== session.userId) return -1
+      return 1
+    })
+  }, [usersPlaylists])
+
   useEffect(() => {
 
-    if (!session.data?.accessToken) return
+    if (!session?.accessToken) return
 
     const getTopArtists = async () => {
       const data = await spotifyAPI.getMyTopArtists({"limit": 10});
@@ -40,36 +49,24 @@ export default function Home() {
       <h1>Your Playlists</h1>
       <ul className={styles.homeItemList}>
         {
-        usersPlaylists.length > 0 &&
-        usersPlaylists.map((item, idx) => {
-          return <li key={idx} className={styles.homeItem}>
-            <img 
-              width={100}
-              height={100}
-              src={item.images[2] ? item.images[2].url : "no image data"} 
-              alt={item.name + 'art'} />
-              {item.name}
-          </li>
-        })
+        sortedPlaylists.length > 0 ?
+        sortedPlaylists.map((item, idx) => 
+          <SmallItem key={idx} item={item} />
+        )
+        : <p>No playlists found.</p>
         }
-        </ul>
+      </ul>
 
-        <h2>Your Top Artists</h2>
-        <ul className={styles.homeItemList}>
+      <h2>Your Top Artists</h2>
+      <ul className={styles.homeItemList}>
         {
-        topArtists.length > 0 &&
-        topArtists.map((item, idx) => {
-          return <li key={idx} className={styles.homeItem}>
-            <img 
-              width={100}
-              height={100}
-              src={item.images[2] ? item.images[2].url : "no image data"} 
-              alt={item.name + 'art'} />
-              {item.name}
-          </li>
-        })
+        topArtists ?
+        topArtists.map((item, idx) => 
+          <SmallItem key={idx} item={item} />
+        )
+        : <p>Loading artists..</p>
         }
-        </ul>
+      </ul>
     </main>
     </>
   )
