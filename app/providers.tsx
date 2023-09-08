@@ -33,7 +33,9 @@ export type contextProps = {
   currentTrackID: string,
   setCurrentTrackID: Dispatch<SetStateAction<string>>,
   playerIsHidden: boolean,
-  setPlayerIsHidden: Dispatch<SetStateAction<boolean>>
+  setPlayerIsHidden: Dispatch<SetStateAction<boolean>>,
+  player: any,
+  setPlayer: Dispatch<SetStateAction<any>>,
 }
 
 export const GlobalStateContext = createContext<contextProps | null>(null);
@@ -50,7 +52,7 @@ export default function Providers({ children } : AuthProps) {
   const [songs, setSongs] = useState([]); // playlist items
   const [message, setMessage] = useState({msg: '', needsUpdate: false}); // playlist update message
   const [playerIsHidden, setPlayerIsHidden] = useState(true);
-
+  const [player, setPlayer] = useState(undefined);
 
   return (
       <SessionProvider>
@@ -65,6 +67,7 @@ export default function Providers({ children } : AuthProps) {
           contextURI, setContextURI, 
           currentTrackID, setCurrentTrackID,
           playerIsHidden, setPlayerIsHidden,
+          player, setPlayer,
           }}>
           {children}
         </GlobalStateContext.Provider>
