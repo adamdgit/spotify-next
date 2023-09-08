@@ -10,20 +10,24 @@ import { spotifyAPI } from '../api/auth/[...nextauth]/route';
 import { GlobalStateContext, contextProps } from '../providers';
 import Loading from './Loading';
 import { useSession } from 'next-auth/react';
+import StatusMessage from './StatusMessage';
 
 export default function Player() {
 
-  const { setCurrentTrackID } = useContext(GlobalStateContext) as contextProps
-  const { setContextID } = useContext(GlobalStateContext) as contextProps
-  const { setContextURI } = useContext(GlobalStateContext) as contextProps
-  const { setDeviceId } = useContext(GlobalStateContext) as contextProps
-  // playlist update message
-  const { setMessage } = useContext(GlobalStateContext) as contextProps
+  const { 
+    contextID,
+    setContextID,
+    setCurrentTrackID,
+    setContextURI,
+    setDeviceId,
+    setMessage,
+    player,
+    setPlayer
+  } = useContext(GlobalStateContext) as contextProps
 
   const session = useSession();
 
   const [isPaused, setIsPaused] = useState(true);
-  const [player, setPlayer] = useState(undefined);
   const [playerIsReady, setPlayerIsReady] = useState(false);
   const [shuffle, setShuffle] = useState(false);
   const [current_track, setTrack] = useState();
@@ -42,6 +46,7 @@ export default function Player() {
   useEffect(() => {
 
     if (!session.data?.accessToken) return
+
     const script = document.createElement("script")
     script.src = "https://sdk.scdn.co/spotify-player.js"
     script.async = true
@@ -181,6 +186,7 @@ export default function Player() {
         </div>
       }
       </div>
+      <StatusMessage />
     </>
   )
 }
