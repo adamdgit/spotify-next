@@ -35,7 +35,7 @@ export default function Player() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [currentTrackPos, setPos] = useState(0); // milliseconds
   const [repeatMode, setRepeatMode] = useState(0);
-  const [volumeLS] = useState(0.3);
+  const [volumeLS] = useState('0.3');
 
   function handlePlayPause() {
     setIsPaused(!isPaused);
@@ -182,11 +182,10 @@ export default function Player() {
 
           <VolumeControl player={player} volumeLS={volumeLS} />
           <PlaybackDevices />
-
+          <StatusMessage />
         </div>
       }
       </div>
-      <StatusMessage />
     </>
   )
 }
