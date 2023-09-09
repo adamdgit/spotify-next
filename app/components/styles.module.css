@@ -192,7 +192,7 @@
 /*  Player styles */
 
 .playerControls {
-  position: fixed;
+  position: sticky;
   display: flex;
   height: 125px;
   width: 100%;
@@ -206,6 +206,7 @@
 }
 
 .playerWrap {
+  position: relative;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 1fr 1fr;
@@ -377,8 +378,7 @@
 
 /*--------Playlist Message---------*/
 
-.playlist-update-message {
-  font-size: .8rem;
+.playlistUpdateMessage {
   text-align: center;
   opacity: 0;
   pointer-events: none;
@@ -388,7 +388,7 @@
   padding: 1rem;
   border: 1px solid var(--green);
   border-radius: 5px;
-  bottom: 120px;
+  bottom: 110px;
   left: 50%;
   transform: translateX(-50%);
   transition: opacity 200ms ease-in-out;
@@ -432,7 +432,7 @@
 }
 
 .playerWrap * button:hover .tooltip,
-.edit-songlist * button:hover .tooltip {
+.editSonglist * button:hover .tooltip {
   opacity: 1;
   top: -50px;
 }
