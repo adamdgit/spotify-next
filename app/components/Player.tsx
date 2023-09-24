@@ -74,7 +74,7 @@ export default function Player() {
 
       player.connect( )
 
-      player.addListener('player_state_changed', ( state => {
+      player.addListener('player_state_changed', (state => {
         if (!state) return
         console.log(state)
         setPlayerIsReady(true)
@@ -93,6 +93,29 @@ export default function Player() {
       }))
     }
   }, [session])
+
+  useEffect(() => {
+
+    if (!session.data?.accessToken) return 
+
+    if (playerIsReady) {
+      const getQueue = async () => {
+        return await fetch(`https://api.spotify.com/v1/me/player/queue`, {
+          method: 'get',
+          headers: {
+            Accept: 'application/json',
+            Authorization: `Bearer ${session?.data.accessToken}`,
+            'Content-Type': 'application/json',
+          }
+        })
+      }      
+      getQueue()
+        .then(res => res.json())
+        .then(data => console.log(data))
+        .catch(err => console.error(err))
+    }
+
+  }, [playerIsReady])
 
   if (!session.data?.accessToken) return <></>
 
