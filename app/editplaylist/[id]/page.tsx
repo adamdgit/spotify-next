@@ -6,10 +6,10 @@ import { useSession } from 'next-auth/react'
 import React, { useCallback, useContext, useEffect, useRef, useState } from 'react'
 import styles from "../../components/styles.module.css"
 import EditPlaylistDetails from '@/app/components/EditPlaylistDetails'
-import BlankSongResult from '@/app/components/BlankSongResult'
 import EditPlaylistItem from '@/app/components/EditPlaylistItem'
 import Loading from '@/app/components/Loading'
 import EditSearchResults from '@/app/components/EditSearchResults'
+import { handleDragAndDrop } from "../../utils/handleDragAndDrop"
 
 export default function EditPlaylist({ params }) {
 
@@ -28,48 +28,79 @@ export default function EditPlaylist({ params }) {
   const [playlistDesc, setPlaylistDesc] = useState('');
   const [originalName, setOriginalName] = useState('');
   const [originalDesc, setOriginalDesc] = useState('');
-   // edit playlist tracks can be different from currently playing global songs
-   const [tracks, setTracks] = useState([]);
+  // edit playlist tracks can be different from currently playing global songs
+  const [tracks, setTracks] = useState([]);
 
-   const container = useRef();
-   const [draggables, setDraggables] = useState([])
-   const setDraggableElement = useCallback(node => {
-    if(node != null) {
-      // create array of draggable elements to add event listeners to
-      setDraggables(current => [...current, node])
+  const container = useRef();
+  const [draggables, setDraggables] = useState([])
+  const setDraggableElement = useCallback(node => {
+  if(node != null) {
+    // create array of draggable elements to add event listeners to
+    setDraggables(current => [...current, node])
+  }
+},[])
+
+  async function getPlaylists() {
+    const data = await spotifyAPI.getPlaylist(playlistID)
+    console.log(data)
+    setTracks(data.body.tracks.items)
+    setPlaylistData(data.body)
+    setPlaylistPublic(data.body.public)
+    setOriginalName(data.body.name)
+    setOriginalDesc(data.body.description)
+  }
+
+  async function removeTrack() {
+
+  }
+
+  async function changeOrder(dragElIndex: number, dragElNewIndex: number) {
+    // empty array before fetching updated playlist
+    setTracks([])
+    setDraggables([])
+
+    // fixes index when moving item up in the playlist (needed)
+    if(dragElIndex < dragElNewIndex) {
+      dragElNewIndex = dragElNewIndex +1
     }
-  },[])
-  
-   async function removeTrack() {
 
-   }
-   
-   useEffect(() => {
+    const data = await spotifyAPI.reorderTracksInPlaylist(playlistID, dragElIndex, dragElNewIndex)
+    console.log(data)
 
-    if (!session?.accessToken) return
-
-    const getPlaylists = async () => {
-      const data = await spotifyAPI.getPlaylist(playlistID)
-      console.log(data)
-      setTracks(data.body.tracks.items)
-      setPlaylistData(data.body)
-      setPlaylistPublic(data.body.public)
-      setOriginalName(data.body.name)
-      setOriginalDesc(data.body.description)
-    }
     getPlaylists();
+  }
+  
+  useEffect(() => {
 
-   }, [session])
+  if (!session?.accessToken) return
+  getPlaylists();
+
+  }, [session])
+
+  // add drag and drop event listeners
+  useEffect(() => {
+
+    if (draggables.length === 0) return;
+
+    const dragStart = handleDragAndDrop(draggables, container, changeOrder);
+
+    // cleanup event listeners on component re-render
+    return () => {
+      draggables.forEach(element => {
+        element.removeEventListener('mousedown', dragStart)
+        element.removeEventListener('touchstart', dragStart)
+      })
+    }
+
+  }, [draggables])
 
   return (
     <main className={styles.mainContent}>
       <h1 className={styles.editHeading}>Playlist editor:</h1>
       <div className={styles.playlistInfo}>
-        <span style={{display:'grid', gap: '1rem'}}>
-          <h1 style={{fontSize: '3.5rem'}}>{!playlistName ? originalName : playlistName}</h1>
-          <h3 style={{fontSize: '2rem'}}>{!playlistDesc ? originalDesc : playlistDesc}</h3>
-          <p>{playlistPublic === false ? 'Private playlist' : 'Public playlist'}</p>
-        </span>
+        <h1 style={{fontSize: '3.5rem'}}>{!playlistName ? originalName : playlistName}</h1>
+        <h3 style={{fontSize: '2rem'}}>{!playlistDesc ? originalDesc : playlistDesc}</h3>
+        <p>{playlistPublic === false ? 'Private playlist' : 'Public playlist'}</p>
       </div>
       {
         playlistData ?
@@ -89,30 +120,17 @@ export default function EditPlaylist({ params }) {
 
           <h2 style={{textAlign: 'center', marginBottom: '2rem'}}>Edit tracks:</h2>
 
-          <div className="edit-songlist" ref={container}>
+          <div className={styles.editSongList} data-songlist="true" ref={container}>
           {
-          contextID === playlistID ?
-            songs.length === 0 ? 
-            <BlankSongResult />
-            :
-            songs.map((song, index) => 
-              <EditPlaylistItem 
-                key={index}
-                song={song} 
-                index={index} 
-                func={removeTrack} 
-                setDraggableElement={setDraggableElement}
-              />) 
-            : 
             tracks.length === 0 ? 
-            <BlankSongResult />
+            <div>No tracks in playlist</div>
             :
             tracks.map((song, index) => 
               <EditPlaylistItem 
                 key={index}
                 song={song} 
                 index={index} 
-                func={removeTrack} 
+                removeTrack={removeTrack} 
                 setDraggableElement={setDraggableElement}
               />)
           }
