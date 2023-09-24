@@ -67,6 +67,7 @@ export default function EditPlaylist({ params }) {
     const data = await spotifyAPI.reorderTracksInPlaylist(playlistID, dragElIndex, dragElNewIndex)
     console.log(data)
 
+    setMessage("playlist order updated");
     getPlaylists();
   }
   
