@@ -9,6 +9,23 @@ export default function VolumeControl({ player, volumeLS }
   const [isMuted, setIsMuted] = useState(false)
   const [percent, setPercent] = useState<string | null>(volumeLS) // int between 0-1
 
+  const setVolumeTrack = useCallback(node => {
+
+    if(node != null) {
+      node.addEventListener('pointerdown', changeVolume);
+    }
+
+    return () => {
+      node.removeEventListener('pointerdown', changeVolume);
+      document.removeEventListener('pointerup', cleanup);
+      document.removeEventListener('pointermove', seek);
+    }
+
+  },[])
+
+  useEffect(() => {
+    isMuted === true ? player.setVolume(0) : player.setVolume(prevVolume)
+  }, [isMuted])
 
   function changeVolume(e: any) {
     // check opposite value as state will not update instantly
@@ -26,12 +43,13 @@ export default function VolumeControl({ player, volumeLS }
   }
 
   function seek(e: any) {
-    const rect = volumeTrack.getBoundingClientRect()
+    const rect = e.target.getBoundingClientRect()
     let calcPercent = Math.min(Math.max(0, e.clientX - rect.x), rect.width) / rect.width
     setPercent(calcPercent.toString()) 
     setPrevVolume(calcPercent.toString())
     player.setVolume(calcPercent)
     window.localStorage.setItem('volume', calcPercent.toString())
+    document.addEventListener('pointerup', cleanup);
   }
 
   // cleanup listeners when user has set the volume
@@ -39,22 +57,6 @@ export default function VolumeControl({ player, volumeLS }
     e.preventDefault()
     document.removeEventListener('pointermove', seek)
   }
-
-  let volumeTrack: any = null
-
-  const setVolumeTrack = useCallback(node => {
-    if(node != null) {
-      volumeTrack = node
-      volumeTrack.addEventListener('pointerdown', changeVolume)
-      document.addEventListener('pointerup', cleanup)
-
-
-    }
-  },[])
-
-  useEffect(() => {
-    isMuted === true ? player.setVolume(0) : player.setVolume(prevVolume)
-  }, [isMuted])
 
   return (
     <div className={styles.volumeControl}>
