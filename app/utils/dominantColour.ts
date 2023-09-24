@@ -36,9 +36,8 @@ export default function getDominantColours(imgUrl: string, setBgColour: Dispatch
     const {data: imageData} = ctx!.getImageData(0, 0, SIZE, SIZE)
 
     for (let i = 0; i < imageData.length; i+=4) {
-      // floor results to try get more overlap on colours, colours dont need to be perfect
-      // add 0's to numbers less than 100, so we know how to split into rbg later on
-      // eg: 15, 55, 155 = 015055155, can be split into [015, 055, 155] and used as rgb
+      // floor results to nearest 10, we want to average out the colours
+      // and find more overlap, to get the dominant colour
       const rgb = 
       leftPad(Math.floor(imageData[i] / 10) * 10) + 
       leftPad(Math.floor(imageData[i + 1] / 10) * 10) + 
