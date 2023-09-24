@@ -6,6 +6,7 @@
   padding: 2rem;
   background: var(--gray-green);
   transition: all 350ms ease-in-out;
+  min-height: calc(100vh - 200px);
 }
 
 .mainContent::after {
@@ -27,6 +28,7 @@
   justify-content: center;
   gap: 1rem;
   margin-block: 2rem;
+  list-style: none;
 }
 
 .homeItem {
@@ -34,12 +36,16 @@
   gap: 1rem;
   align-items: center;
   background: var(--black);
-  border: 1px solid #333;
+  border: 1px solid var(--gray-border);
   border-radius: 0 10px 10px 0;
+  width: 100%;
+  color: white;
+  transition: all 150ms ease-in-out;
 }
 
 .homeItem:hover {
   background: var(--gray-green);
+  border: 1px solid var(--green);
 }
 
 .playlists {
@@ -59,7 +65,7 @@
   background: var(--black);
   border-radius: 0 15px 15px 0;
   gap: 1rem;
-  border: 1px solid #333;
+  border: 1px solid var(--gray-border);
 }
 
 .playlistItem button {
@@ -102,9 +108,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  gap:  3rem;
+  gap: 2rem;
   background-color: black;
-  padding: 2rem;
+  padding: 1rem;
   border-bottom: 1px solid #444;
 }
 
@@ -383,7 +389,7 @@
   opacity: 0;
   pointer-events: none;
   position: absolute;
-  background-color: var(--bg-blue);
+  background-color: var(--gray-green);
   color: white;
   padding: 1rem;
   border: 1px solid var(--green);
@@ -432,7 +438,7 @@
 }
 
 .playerWrap * button:hover .tooltip,
-.editSonglist * button:hover .tooltip {
+.editSongList * button:hover .tooltip {
   opacity: 1;
   top: -50px;
 }
@@ -488,7 +494,7 @@
   height: 50px;
   text-transform: uppercase;
   border-bottom: 1px solid var(--gray-green);
-  background: linear-gradient(180deg, var(--gray-green), var(--bg-blue));
+  background: linear-gradient(180deg, var(--gray-green), var(--gray-green));
   padding: 1.2rem .7rem;
   margin-bottom: 1rem;
   font-size: .6rem;
@@ -557,10 +563,10 @@
 }
 
 .draggable:hover, .editDraggable:hover {
-  background-color: var(--bg-blue);
+  background-color: unset;
 }
 
-.draggable h1, .editDraggable h1 {
+.draggable h1, .editDraggable span {
   font-size: 1rem;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -618,11 +624,31 @@
 
 /*--edit-draggables--*/
 
+.saveBtn {
+  justify-self: center;
+  width: fit-content;
+  padding: .8rem 1rem;
+  background-color: var(--black);
+  color: white;
+  border-radius: 5px;
+  border: 1px solid var(--gray-border);
+}
+
+.saveBtn:hover {
+  border: 1px solid var(--green);
+}
+
 .editDraggable {
   grid-template-columns: 18px 80px auto 40px max-content max-content;
-  justify-self: center;
-  padding-right: 20px;
+  padding-right: 1rem;
   cursor: unset;
+  background-color: var(--black);
+  border: 1px solid var(--gray-border);
+}
+
+.editDraggable:hover {
+  background-color: var(--gray-green);
+  border: 1px solid var(--green);
 }
 
 .editDraggable .dragIcon {
@@ -643,15 +669,11 @@
   fill: var(--green);
 }
 
-.editDraggable:hover .dragIcon svg {
-  background-color: var(--bg-blue);
-}
-
 /* Lyrics section */
 .song-wrap {
   overflow-y: scroll;
   border-top: 3px solid var(--gray-green);
-  background-color: var(--bg-blue);
+  background-color: var(--gray-green);
   height: calc(100vh - 215px);
 }
 
@@ -703,13 +725,6 @@
 .song-info ul li h3 { width: 120px; }
 
 /*-----Drag & Drop-----*/
-
-.clone {
-  position: absolute;
-  transform: translate(var(--x), var(--y));
-  z-index:999;
-  background-color: var(--bg-blue);
-}
 
 .selected { border: 1px solid var(--green); }
 
@@ -819,11 +834,10 @@
   align-items: center;
 }
 
-.editSonglist {
+.editSongList {
   display: grid;
   position: relative;
   transition: transform 400ms cubic-bezier(.17,.67,.07,.94);
-  background: var(--gray-green);
   max-width: 1200px;
   margin: 0 auto;
   z-index: 2;
