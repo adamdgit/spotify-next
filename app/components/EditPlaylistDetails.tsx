@@ -96,7 +96,7 @@ export default function EditPlaylistDetails({ ...props }) {
           <input type="checkbox" onClick={(e) => setIsPublic(e.target.checked)}/>
           <p>(Leave unchecked for private playlist)</p>
         </span>
-        <button type='submit' className={styles.play}>Save changes</button>
+        <button type='submit' className={styles.saveBtn}>Save changes</button>
       </form>
     </div>
   )
