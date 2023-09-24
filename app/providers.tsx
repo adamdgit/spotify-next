@@ -8,11 +8,6 @@ export interface AuthProps {
   children: React.ReactNode,
 }
 
-export type messageProps = {
-  msg: string, 
-  needsUpdate: boolean
-}
-
 export type contextProps = {
   deviceId: string,
   setDeviceId: Dispatch<SetStateAction<string>>,
@@ -24,8 +19,8 @@ export type contextProps = {
   setUserID: Dispatch<SetStateAction<string>>,
   songs: never[] | [],
   setSongs: Dispatch<SetStateAction<never[]>>,
-  message: messageProps,
-  setMessage: Dispatch<SetStateAction<messageProps>>,
+  message: string,
+  setMessage: Dispatch<SetStateAction<string>>,
   contextID: string,
   setContextID: Dispatch<SetStateAction<string>>,
   contextURI: string,
@@ -50,7 +45,7 @@ export default function Providers({ children } : AuthProps) {
   const [username, setUsername] = useState('');
   const [userID, setUserID] = useState('');
   const [songs, setSongs] = useState([]); // playlist items
-  const [message, setMessage] = useState({msg: '', needsUpdate: false}); // playlist update message
+  const [message, setMessage] = useState(''); // playlist update message
   const [playerIsHidden, setPlayerIsHidden] = useState(true);
   const [player, setPlayer] = useState(undefined);
 
