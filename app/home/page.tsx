@@ -10,8 +10,9 @@ import SmallItem from '../components/SmallItem';
 export default function Home() {
   
   const { data: session} = useSession();
-  const [topArtists, setTopArtists] = useState([])
-  const { usersPlaylists, setUsersPlaylists } = useContext(GlobalStateContext) as contextProps
+  const [topArtists, setTopArtists] = useState([]);
+  const [featuredPlaylists, setFeaturedPlaylists] = useState([]);
+  const { usersPlaylists, setUsersPlaylists } = useContext(GlobalStateContext) as contextProps;
 
   const sortedPlaylists = useMemo(() => {
     return usersPlaylists.sort((a, b) => {
@@ -41,6 +42,17 @@ export default function Home() {
     getPlaylists()
       .catch(err => console.error(err))
 
+    const getFeatured = async () => {
+      const data = await spotifyAPI.getFeaturedPlaylists({
+        limit: 10, offset: 0
+      });
+      setFeaturedPlaylists(data.body.playlists.items);
+      console.log(data)
+    }
+    getFeatured()
+      .catch(err => console.error(err))
+      
+
   },[session])
 
   return (
@@ -65,6 +77,17 @@ export default function Home() {
           <SmallItem key={idx} item={item} />
         )
         : <p>Loading artists..</p>
+        }
+      </ul>
+
+      <h2>Featured Playlists</h2>
+      <ul className={styles.homeItemList}>
+        {
+        featuredPlaylists ?
+        featuredPlaylists.map((item, idx) => 
+          <SmallItem key={idx} item={item} />
+        )
+        : <p>Loading featured playlists..</p>
         }
       </ul>
     </main>
