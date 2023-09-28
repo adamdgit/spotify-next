@@ -25,7 +25,7 @@ export default function Player() {
     setPlayer
   } = useContext(GlobalStateContext) as contextProps
 
-  const session = useSession();
+  const { data: session } = useSession();
 
   const [isPaused, setIsPaused] = useState(true);
   const [playerIsReady, setPlayerIsReady] = useState(false);
@@ -45,7 +45,7 @@ export default function Player() {
   // setup webplayback sdk on mount
   useEffect(() => {
 
-    if (!session.data?.accessToken) return
+    if (!session?.accessToken) return
 
     const script = document.createElement("script")
     script.src = "https://sdk.scdn.co/spotify-player.js"
@@ -56,7 +56,7 @@ export default function Player() {
     window.onSpotifyWebPlaybackSDKReady = () => {
       const player = new window.Spotify.Player({
           name: 'React Webplayer',
-          getOAuthToken: cb => { cb(session.data.accessToken); },
+          getOAuthToken: cb => { cb(session.accessToken); },
           volume: volumeLS
       })
 
@@ -94,30 +94,7 @@ export default function Player() {
     }
   }, [session])
 
-  useEffect(() => {
-
-    if (!session.data?.accessToken) return 
-
-    if (playerIsReady) {
-      const getQueue = async () => {
-        return await fetch(`https://api.spotify.com/v1/me/player/queue`, {
-          method: 'get',
-          headers: {
-            Accept: 'application/json',
-            Authorization: `Bearer ${session?.data.accessToken}`,
-            'Content-Type': 'application/json',
-          }
-        })
-      }      
-      getQueue()
-        .then(res => res.json())
-        .then(data => console.log(data))
-        .catch(err => console.error(err))
-    }
-
-  }, [playerIsReady])
-
-  if (!session.data?.accessToken) return <></>
+  if (!session?.accessToken || new Date(session?.expires).getTime() < Date.now()) return <></>
 
   return (
     <>
