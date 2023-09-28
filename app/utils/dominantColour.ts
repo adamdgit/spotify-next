@@ -1,5 +1,3 @@
-import { Dispatch, SetStateAction } from "react";
-
 type rgbProps = {
   r: number,
   g: number,
@@ -7,7 +5,7 @@ type rgbProps = {
 }
 
 // cheap way to get dominant colour from image by converting image to 1px canvas
-export default function getDominantColours(imgUrl: string, setBgColour: Dispatch<SetStateAction<rgbProps>>) {
+export default async function getDominantColours(imgUrl: string) : Promise<rgbProps> {
 
   const SIZE = 4;
   const image = new Image();
@@ -28,36 +26,42 @@ export default function getDominantColours(imgUrl: string, setBgColour: Dispatch
   // allow cross origin url
   image.crossOrigin = "Anonymous"
 
-  // after image loads, draw to canvas as SIZE pixel and get rgba values
-  image.onload = () => {
-    // load image and create from imgurl
-    ctx!.drawImage(image, 0, 0, SIZE, SIZE)
 
-    const {data: imageData} = ctx!.getImageData(0, 0, SIZE, SIZE)
+  const dominantColour = new Promise<rgbProps>((resolve, reject) => {
+    // after image loads, draw to canvas as SIZE pixel and get rgba values
+    image.onload = () => {
+      // load image and create from imgurl
+      ctx!.drawImage(image, 0, 0, SIZE, SIZE)
 
-    for (let i = 0; i < imageData.length; i+=4) {
-      // floor results to nearest 10, we want to average out the colours
-      // and find more overlap, to get the dominant colour
-      const rgb = 
-      leftPad(Math.floor(imageData[i] / 10) * 10) + 
-      leftPad(Math.floor(imageData[i + 1] / 10) * 10) + 
-      leftPad(Math.floor(imageData[i + 2] / 10) * 10)
-      values.push(rgb)
+      const {data: imageData} = ctx!.getImageData(0, 0, SIZE, SIZE)
+
+      for (let i = 0; i < imageData.length; i+=4) {
+        // floor results to nearest 10, we want to average out the colours
+        // and find more overlap, to get the dominant colour
+        const rgb = 
+        leftPad(Math.floor(imageData[i] / 10) * 10) + 
+        leftPad(Math.floor(imageData[i + 1] / 10) * 10) + 
+        leftPad(Math.floor(imageData[i + 2] / 10) * 10)
+        values.push(rgb)
+      }
+
+      // return most occuring colour, split into an array that is 3 numbers long each
+      const mostOccuring = mode(values).match(/.{1,3}/g)
+
+      // save most occuring rgb values
+      fixedColour.r = Number(mostOccuring[0])
+      fixedColour.g = Number(mostOccuring[1])
+      fixedColour.b = Number(mostOccuring[2])
+
+      // delete elements
+      image.remove();
+      canvas.remove();
+
+      resolve(fixedColour)
     }
+  })
 
-    // return most occuring colour, split into an array that is 3 numbers long each
-    const mostOccuring = mode(values).match(/.{1,3}/g)
-
-    // save most occuring rgb values
-    fixedColour.r = Number(mostOccuring[0])
-    fixedColour.g = Number(mostOccuring[1])
-    fixedColour.b = Number(mostOccuring[2])
-
-    setBgColour(fixedColour)
-  }
-  // delete elements
-  image.remove();
-  canvas.remove();
+  return dominantColour
 
 }
 
