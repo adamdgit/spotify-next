@@ -10,8 +10,15 @@ import EditPlaylistItem from '@/app/components/EditPlaylistItem'
 import Loading from '@/app/components/Loading'
 import EditSearchResults from '@/app/components/EditSearchResults'
 import { handleDragAndDrop } from "../../utils/handleDragAndDrop"
+import dominantColour from '@/app/utils/dominantColour'
 
-export default function EditPlaylist({ params }) {
+type rgbProps = {
+  r: number,
+  g: number,
+  b: number
+}
+
+export default function EditPlaylist({ params } : { params: { id: string } }) {
 
   const { 
     songs,
@@ -28,12 +35,14 @@ export default function EditPlaylist({ params }) {
   const [playlistDesc, setPlaylistDesc] = useState('');
   const [originalName, setOriginalName] = useState('');
   const [originalDesc, setOriginalDesc] = useState('');
+
+  const [bgColour, setBgColour] = useState<rgbProps>({ r: 46, g: 53, b: 50 });
   // edit playlist tracks can be different from currently playing global songs
   const [tracks, setTracks] = useState([]);
 
   const container = useRef();
   const [draggables, setDraggables] = useState([])
-  const setDraggableElement = useCallback(node => {
+  const setDraggableElement = useCallback((node: HTMLDivElement) => {
   if(node != null) {
     // create array of draggable elements to add event listeners to
     setDraggables(current => [...current, node])
@@ -48,10 +57,20 @@ export default function EditPlaylist({ params }) {
     setPlaylistPublic(data.body.public)
     setOriginalName(data.body.name)
     setOriginalDesc(data.body.description)
+    // must await image loading before getting dominant colour
+    setBgColour(await dominantColour(data.body.images[1].url))
   }
 
-  async function removeTrack() {
+  async function removeTrack(trackUri: string) {
+    // empty array before fetching updated playlist
+    setTracks([])
+    setDraggables([])
 
+    const data = await spotifyAPI.removeTracksFromPlaylist(playlistID, [{uri: trackUri}])
+    console.log(data)
+
+    setMessage("Removed track from playlist");
+    getPlaylists();
   }
 
   async function changeOrder(dragElIndex: number, dragElNewIndex: number) {
@@ -67,14 +86,14 @@ export default function EditPlaylist({ params }) {
     const data = await spotifyAPI.reorderTracksInPlaylist(playlistID, dragElIndex, dragElNewIndex)
     console.log(data)
 
-    setMessage("playlist order updated");
+    setMessage("Playlist order updated");
     getPlaylists();
   }
   
   useEffect(() => {
 
-  if (!session?.accessToken) return
-  getPlaylists();
+    if (!session?.accessToken) return
+    getPlaylists();
 
   }, [session])
 
@@ -96,7 +115,7 @@ export default function EditPlaylist({ params }) {
   }, [draggables])
 
   return (
-    <main className={styles.mainContent}>
+    <main className={styles.mainContent} style={{background: `linear-gradient(rgb(${bgColour.r} ${bgColour.g} ${bgColour.b}) 100px, rgb(10,10,10) 350px)`}}>
       <h1 className={styles.editHeading}>Playlist editor:</h1>
       <div className={styles.playlistInfo}>
         <h1 style={{fontSize: '3.5rem'}}>{!playlistName ? originalName : playlistName}</h1>
