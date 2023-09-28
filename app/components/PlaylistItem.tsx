@@ -2,16 +2,15 @@
 
 import { useRouter } from "next/navigation";
 import { spotifyAPI } from "../api/auth/[...nextauth]/route";
-import dominantColour from "../utils/dominantColour";
 import styles from "./styles.module.css"
 
-export default function PlaylistItem({  ...props }) {
+export default function PlaylistItem({ ...props }) {
 
   const router = useRouter();
 
   return (
     <li 
-      onMouseEnter={() => dominantColour(props.item.images[1].url, props.setBgColour)} 
+      onMouseEnter={() => props.setBgColour(props.item.dominantColour)} 
       className={styles.playlistItem}>
       <img 
         onClick={() => spotifyAPI.play({'context_uri': props.item.uri})}
