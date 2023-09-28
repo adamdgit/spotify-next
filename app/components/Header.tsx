@@ -33,7 +33,7 @@ export default function Header(){
     }
   },[session])
 
-  if (!session?.accessToken) return <></>
+  if (!session?.accessToken || new Date(session?.expires).getTime() < Date.now()) return <></>
 
   return (
     <header className={styles.header}>
