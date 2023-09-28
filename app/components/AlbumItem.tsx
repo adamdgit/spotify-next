@@ -1,7 +1,6 @@
 'use client'
 
 import { spotifyAPI } from "../api/auth/[...nextauth]/route";
-import dominantColour from "../utils/dominantColour";
 import styles from "./styles.module.css"
 import { convertNamesToString } from "../utils/convertNamesToString"
 
@@ -9,7 +8,7 @@ export default function AlbumItem({  ...props }) {
 
   return (
     <li 
-      onMouseEnter={() => dominantColour(props.item.album.images[1].url, props.setBgColour)} 
+      onMouseEnter={() => props.setBgColour(props.item.dominantColour)} 
       className={styles.playlistItem}>
       <img 
         onClick={() => spotifyAPI.play({'context_uri': props.item.album.uri})}
