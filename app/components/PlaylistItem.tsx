@@ -30,7 +30,7 @@ export default function PlaylistItem({ ...props }) {
             : 
             <span className={styles.resultBtns}>
               <button 
-                onClick={() => router.push(`/editplaylist/${encodeURIComponent(props.item.id)}`)}
+                onClick={() => router.push(`/spotify/editplaylist/${encodeURIComponent(props.item.id)}`)}
                 className={styles.editLink}>
                 Edit
               </button>
