@@ -47,7 +47,7 @@ const options: NextAuthOptions = {
     signIn: '/login'
   },
   callbacks: {
-    async redirect({ url, baseUrl }) { return '/home' },
+    async redirect({ url, baseUrl }) { return '/spotify' },
     async jwt({ token, user, account }) {
 
       // sign in
