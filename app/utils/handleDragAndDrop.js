@@ -7,8 +7,8 @@ export function handleDragAndDrop(draggables, container, changeOrder) {
   let timer = null;
   // 5th child of the draggable element is the drag and drop button
   draggables.forEach(element => {
-    element.children[4].addEventListener('mousedown', dragStart)
-    element.children[4].addEventListener('touchstart', dragStart)
+    element.children[4].addEventListener('mousedown', dragStart);
+    element.children[4].addEventListener('touchstart', dragStart);
   })
 
   function dragStart(e) {
@@ -19,9 +19,6 @@ export function handleDragAndDrop(draggables, container, changeOrder) {
     document.querySelector('body').appendChild(clone)
     const songlistWrapper = document.querySelector('[data-songlist]')
 
-    console.log(element.parentElement.offsetTop)
-    console.log(document.querySelector('html').scrollTop)
-
     // set clones styles
     clone.dataset.clone = 'clone'
     clone.style.position = 'absolute'
@@ -29,7 +26,6 @@ export function handleDragAndDrop(draggables, container, changeOrder) {
     clone.style.zIndex = '999'
     clone.style.height = `${element.offsetHeight}px`
     clone.style.width = `${element.offsetWidth}px`
-    // top should be mouse y pos + y scrolled of main section
     clone.style.top = `${-55 + document.querySelector('html').scrollTop}px`
     element.style.opacity = '0.3'
     
@@ -45,13 +41,17 @@ export function handleDragAndDrop(draggables, container, changeOrder) {
     }
 
     // cancel drag listener, start listening for pointermove instead
-    e.preventDefault()
+    e.preventDefault();
 
-    document.addEventListener('mousemove', mouseMove)
-    document.addEventListener('touchmove', touchMove)
+    document.addEventListener('mousemove', mouseMove);
+    document.addEventListener('touchmove', touchMove);
     
     function mouseMove(e) {
       // scroll up or down if draggable element touches top or bottom of scroll area
+
+      // ---------------------------------------------------------------------------------------------------
+      // -----------------------------TODO: FIX 1135 hard coded!! ------------------------------------------
+      // ---------------------------------------------------------------------------------------------------
       if (e.clientY < 150 || e.clientY > 1135) {
         elementIsOverflowing(e, 'web')
       } else {
@@ -75,6 +75,7 @@ export function handleDragAndDrop(draggables, container, changeOrder) {
       } else {
         clearTimeout(timer);
       }
+      // clone follows finger but only on y axis
       clone.style.setProperty('--y', e.changedTouches[0].clientY + 'px')
       let nearestNode = getNearestNode(e.changedTouches[0].clientY, draggables)
       // prevents constant rendering of element, only inserts when element is different
@@ -83,8 +84,9 @@ export function handleDragAndDrop(draggables, container, changeOrder) {
       }
     }
 
-    document.addEventListener('mouseup', placeEl)
-    document.addEventListener('touchend', placeEl)
+    document.addEventListener('mouseup', placeEl);
+    document.addEventListener('touchend', placeEl);
+
     function placeEl() {
       // remove listeners, place element, remove clone, reset timer function
       offset = 0
@@ -99,7 +101,7 @@ export function handleDragAndDrop(draggables, container, changeOrder) {
       // get new index of moved element
       let newIndex = Array.from(container.current.childNodes).indexOf(element)
       // Only send API request if element has moved positions
-      if(startIndex === newIndex) return
+      if (startIndex === newIndex) return
       changeOrder(startIndex, newIndex)
     }
 
