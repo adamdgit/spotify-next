@@ -15,6 +15,34 @@ export default function VolumeControl({ player, volumeLS }
       node.addEventListener('pointerdown', changeVolume);
     }
 
+    function changeVolume(e: any) {
+      const rect = e.target.getBoundingClientRect()
+      let calcPercent: number = Math.min(Math.max(0, e.pageX - rect.x), rect.width) / rect.width
+      setPercent(calcPercent.toString()) 
+      setPrevVolume(calcPercent.toString())
+      player.setVolume(calcPercent)
+      // stores volume to localstorage, to use on app open
+      window.localStorage.setItem('volume', calcPercent.toString())
+      document.addEventListener('pointermove', seek)
+    }
+  
+    function seek(e: any) {
+      const rect = node.getBoundingClientRect()
+      let calcPercent = Math.min(Math.max(0, e.clientX - rect.x), rect.width) / rect.width
+      console.log(rect)
+      setPercent(calcPercent.toString()) 
+      setPrevVolume(calcPercent.toString())
+      player.setVolume(calcPercent)
+      window.localStorage.setItem('volume', calcPercent.toString())
+      document.addEventListener('pointerup', cleanup);
+    }
+  
+    // cleanup listeners when user has set the volume
+    function cleanup(e: any) {
+      e.preventDefault()
+      document.removeEventListener('pointermove', seek)
+    }
+
     return () => {
       node.removeEventListener('pointerdown', changeVolume);
       document.removeEventListener('pointerup', cleanup);
@@ -27,37 +55,6 @@ export default function VolumeControl({ player, volumeLS }
     setIsMuted(!isMuted)
     // must check opposite as settting stateo occurs later
     !isMuted ? player.setVolume(0) : player.setVolume(prevVolume)
-  }
-
-  function changeVolume(e: any) {
-    // check opposite value as state will not update instantly
-    if (isMuted === false) {
-      setIsMuted(false) 
-    }
-    const rect = e.target.getBoundingClientRect()
-    let calcPercent: number = Math.min(Math.max(0, e.pageX - rect.x), rect.width) / rect.width
-    setPercent(calcPercent.toString()) 
-    setPrevVolume(calcPercent.toString())
-    player.setVolume(calcPercent)
-    // stores volume to localstorage, to use on app open
-    window.localStorage.setItem('volume', calcPercent.toString())
-    document.addEventListener('pointermove', seek)
-  }
-
-  function seek(e: any) {
-    const rect = e.target.getBoundingClientRect()
-    let calcPercent = Math.min(Math.max(0, e.clientX - rect.x), rect.width) / rect.width
-    setPercent(calcPercent.toString()) 
-    setPrevVolume(calcPercent.toString())
-    player.setVolume(calcPercent)
-    window.localStorage.setItem('volume', calcPercent.toString())
-    document.addEventListener('pointerup', cleanup);
-  }
-
-  // cleanup listeners when user has set the volume
-  function cleanup(e: any) {
-    e.preventDefault()
-    document.removeEventListener('pointermove', seek)
   }
 
   return (
