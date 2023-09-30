@@ -4,12 +4,12 @@ import { spotifyAPI } from '@/app/api/auth/[...nextauth]/route'
 import { GlobalStateContext, contextProps } from '@/app/providers'
 import { useSession } from 'next-auth/react'
 import React, { useCallback, useContext, useEffect, useRef, useState } from 'react'
-import styles from "../../components/styles.module.css"
+import styles from "@/app/components/styles.module.css"
 import EditPlaylistDetails from '@/app/components/EditPlaylistDetails'
 import EditPlaylistItem from '@/app/components/EditPlaylistItem'
 import Loading from '@/app/components/Loading'
 import EditSearchResults from '@/app/components/EditSearchResults'
-import { handleDragAndDrop } from "../../utils/handleDragAndDrop"
+import { handleDragAndDrop } from "@/app/utils/handleDragAndDrop"
 import dominantColour from '@/app/utils/dominantColour'
 
 type rgbProps = {

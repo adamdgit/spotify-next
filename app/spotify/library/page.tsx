@@ -2,12 +2,12 @@
 
 import { useSession } from "next-auth/react";
 import { useContext, useEffect, useMemo, useState } from "react";
-import { GlobalStateContext, contextProps } from "../providers";
-import { spotifyAPI } from "../api/auth/[...nextauth]/route";
-import styles from '../components/styles.module.css'
-import PlaylistItem from "../components/PlaylistItem";
-import AlbumItem from "../components/AlbumItem";
-import getDominantColour from "../utils/dominantColour";
+import { GlobalStateContext, contextProps } from "../../providers";
+import { spotifyAPI } from "../../api/auth/[...nextauth]/route";
+import styles from '@/app/components/styles.module.css'
+import PlaylistItem from "@/app/components/PlaylistItem";
+import AlbumItem from "@/app/components/AlbumItem";
+import getDominantColour from "@/app/utils/dominantColour";
 
 type rgbProps = {
   r: number,

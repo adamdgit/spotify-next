@@ -3,11 +3,11 @@
 import React, { useContext, useEffect, useMemo, useState } from 'react'
 import { spotifyAPI } from '../api/auth/[...nextauth]/route';
 import { useSession } from 'next-auth/react';
-import styles from "../components/styles.module.css"
+import styles from "@/app/components/styles.module.css"
 import { GlobalStateContext, contextProps } from '../providers';
-import SmallItem from '../components/SmallItem';
+import SmallItem from '@/app/components/SmallItem';
 
-export default function Home() {
+export default function Spotify() {
   
   const { data: session} = useSession();
   const [topArtists, setTopArtists] = useState([]);
