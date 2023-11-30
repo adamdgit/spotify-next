@@ -18,6 +18,7 @@ export default function VolumeControl({ player, volumeLS }
     function changeVolume(e: any) {
       const rect = e.target.getBoundingClientRect()
       let calcPercent: number = Math.min(Math.max(0, e.pageX - rect.x), rect.width) / rect.width
+      
       setPercent(calcPercent.toString()) 
       setPrevVolume(calcPercent.toString())
       player.setVolume(calcPercent)
@@ -29,7 +30,7 @@ export default function VolumeControl({ player, volumeLS }
     function seek(e: any) {
       const rect = node.getBoundingClientRect()
       let calcPercent = Math.min(Math.max(0, e.clientX - rect.x), rect.width) / rect.width
-      console.log(rect)
+
       setPercent(calcPercent.toString()) 
       setPrevVolume(calcPercent.toString())
       player.setVolume(calcPercent)
