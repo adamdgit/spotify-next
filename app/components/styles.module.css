@@ -1,15 +1,13 @@
-
 /* main content */
-.mainContent {
+.pageWrap {
   z-index: 5;
   position: relative;
-  padding: 2rem;
   background: var(--gray-green);
+  background: linear-gradient(0deg, #141615, var(--gray-green));
   transition: all 450ms ease-in-out;
-  min-height: calc(100vh - 200px);
 }
 
-.mainContent::after {
+.pageWrap::after {
   z-index: -1;
   pointer-events: none;
   position: absolute;
@@ -20,6 +18,13 @@
   display: block;
   width: 100%;
   height: 100%;
+}
+
+.mainContent {
+  padding: 2rem;
+  margin: 0 auto;
+  max-width: var(--max-page-width);
+  min-height: calc(100vh - 200px);
 }
 
 .homeItemList {
@@ -40,6 +45,7 @@
   border-radius: 0 10px 10px 0;
   width: 100%;
   color: white;
+  font-size: .9rem;
   transition: all 150ms ease-in-out;
 }
 
@@ -68,14 +74,14 @@
   border: 1px solid var(--gray-border);
 }
 
-.playlistItem button {
+.button1 {
   width: fit-content;
   padding: 8px 15px;
   background: var(--gray-green);
   color: white;
 }
 
-.playlistItem button:hover {
+.button1:hover {
   background: var(--green);
 }
 
@@ -366,18 +372,15 @@
   box-shadow: 4px 4px 10px black;
 }
 
-.device-list .triangle {
-  border-top: 8px solid var(--gray-green);
-}
-
-.device-list li {
+.deviceList li {
   cursor: pointer;
   padding: 1rem;
   background: var(--gray-green);
+  box-shadow: 0px 4px 6px 0px var(--black);
   border-radius: 5px;
 }
 
-.device-list li:hover {
+.deviceList li:hover {
   color: var(--green);
   background: black;
 }
@@ -405,7 +408,7 @@
   height: 0; 
   border-left: 8px solid transparent;
   border-right: 8px solid transparent;
-  border-top: 8px solid var(--green);
+  border-top: 8px solid var(--gray-green);
   position: absolute;
   bottom:-8px;
   left: 50%;
@@ -841,6 +844,7 @@
   max-width: 1200px;
   margin: 0 auto;
   z-index: 2;
+  background: var(--black);
 }
 
 .editHeading {
@@ -855,3 +859,32 @@
   width: 150px;
   height: 60px;
 }
+
+/*-----Search songs page---------*/
+
+.searchList {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(450px, 1fr));
+  justify-content: center;
+  gap: 1rem;
+  margin-block: 2rem;
+  list-style: none;
+}
+
+.searchResult {
+  display: grid;
+  grid-template-columns: auto 1fr 60px 60px;
+  gap: 1rem;
+  align-items: center;
+  background: var(--black);
+  border: 1px solid var(--gray-border);
+  border-radius: 0 10px 10px 0;
+  width: 100%;
+  color: white;
+  font-size: .9rem;
+  transition: all 150ms ease-in-out;
+  font-size: .9rem;
+  padding: 1rem;
+}
+
+.searchResult:hover { border: 1px solid var(--green); }
