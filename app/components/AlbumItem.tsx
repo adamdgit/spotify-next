@@ -21,6 +21,7 @@ export default function AlbumItem({  ...props }) {
         <h2>{props.item.album.name}</h2>
         <p>{convertNamesToString(props.item.album.artists)}</p>
         <button 
+          className={styles.button1}
           onClick={() => spotifyAPI.removeFromMySavedAlbums(props.item.album.id)}>
           Remove
         </button>
