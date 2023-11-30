@@ -40,7 +40,7 @@ export default function Library() {
 
       // get dominant colour for each playlist and add to spotify data
       for (let i = 0; i < data.body.items.length; i++) {
-        let colour = await getDominantColour(data.body.items[i].images[1].url)
+        let colour = await getDominantColour(tempData[i].images[0].url)
         tempData[i].dominantColour = colour;
       }
 
@@ -67,35 +67,37 @@ export default function Library() {
   },[session])
 
   return (
-    <main className={styles.mainContent} style={{background: `rgb(${bgColour.r} ${bgColour.g} ${bgColour.b})`}}>
-      
-      <h1>Your Library</h1>
-      <ul className={styles.playlists}>
-        {
-        sortedPlaylists.map((item, index) => (
-          <PlaylistItem 
-            key={index}
-            session={session}
-            item={item} 
-            index={index} 
-            setBgColour={setBgColour} />
-        ))
-        }
-      </ul>
+    <div className={styles.pageWrap} style={{background: `rgb(${bgColour.r} ${bgColour.g} ${bgColour.b})`}}>
+      <main className={styles.mainContent}>
+        
+        <h1>Your Library</h1>
+        <ul className={styles.playlists}>
+          {
+          sortedPlaylists.map((item, index) => (
+            <PlaylistItem 
+              key={index}
+              session={session}
+              item={item} 
+              index={index} 
+              setBgColour={setBgColour} />
+          ))
+          }
+        </ul>
 
-      <h2>Saved Albums</h2>
-      <ul className={styles.playlists}>
-        {
-        albums.map((item, index) => (
-          <AlbumItem 
-            key={index}
-            session={session}
-            item={item} 
-            index={index} 
-            setBgColour={setBgColour} />
-        ))
-        }
-      </ul>
-    </main>
+        <h2>Saved Albums</h2>
+        <ul className={styles.playlists}>
+          {
+          albums.map((item, index) => (
+            <AlbumItem 
+              key={index}
+              session={session}
+              item={item} 
+              index={index} 
+              setBgColour={setBgColour} />
+          ))
+          }
+        </ul>
+      </main>
+    </div>
   )
 }
