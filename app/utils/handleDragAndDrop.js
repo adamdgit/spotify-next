@@ -3,6 +3,9 @@ import { getNearestNode } from "./getNearestNode"
 // drag and drop event listener handler
 export function handleDragAndDrop(draggables, container, changeOrder) {
 
+  const headerHeight = document.querySelector('header').clientHeight;
+  const playerHeight = document.querySelector('footer').clientHeight;
+  const songlistWrapper = document.querySelector('[data-songlist]')
   let offset = 0;
   let timer = null;
   // 5th child of the draggable element is the drag and drop button
@@ -12,12 +15,13 @@ export function handleDragAndDrop(draggables, container, changeOrder) {
   })
 
   function dragStart(e) {
+    // target will be the button, we want the parent
     let element = e.target.parentElement
     let startIndex = Number(element.dataset.index)
+
     // create a copy of the dragging element for effect
     let clone = element.cloneNode(true)
     document.querySelector('body').appendChild(clone)
-    const songlistWrapper = document.querySelector('[data-songlist]')
 
     // set clones styles
     clone.dataset.clone = 'clone'
@@ -48,11 +52,7 @@ export function handleDragAndDrop(draggables, container, changeOrder) {
     
     function mouseMove(e) {
       // scroll up or down if draggable element touches top or bottom of scroll area
-
-      // ---------------------------------------------------------------------------------------------------
-      // -----------------------------TODO: FIX 1135 hard coded!! ------------------------------------------
-      // ---------------------------------------------------------------------------------------------------
-      if (e.clientY < 150 || e.clientY > 1135) {
+      if (e.clientY < headerHeight || e.clientY > window.innerHeight - playerHeight) {
         elementIsOverflowing(e, 'web')
       } else {
         clearTimeout(timer);
