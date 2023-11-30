@@ -98,7 +98,7 @@ export default function Player() {
 
   return (
     <>
-      <div className={styles.playerControls}>
+      <footer className={styles.playerControls}>
       {
       !playerIsReady ? <Loading loadingMsg={"Connecting Spotify Player..."}/>
       :
@@ -185,7 +185,7 @@ export default function Player() {
           <StatusMessage />
         </div>
       }
-      </div>
+      </footer>
     </>
   )
 }
