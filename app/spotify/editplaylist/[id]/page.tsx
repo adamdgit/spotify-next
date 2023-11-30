@@ -41,13 +41,13 @@ export default function EditPlaylist({ params } : { params: { id: string } }) {
   const [tracks, setTracks] = useState([]);
 
   const container = useRef();
-  const [draggables, setDraggables] = useState([])
+  const [draggables, setDraggables] = useState<HTMLDivElement[]>([])
   const setDraggableElement = useCallback((node: HTMLDivElement) => {
-  if(node != null) {
-    // create array of draggable elements to add event listeners to
-    setDraggables(current => [...current, node])
-  }
-},[])
+    if(node != null) {
+      // create array of draggable elements to add event listeners to
+      setDraggables(current => [...current, node])
+    }
+  },[])
 
   async function getPlaylists() {
     const data = await spotifyAPI.getPlaylist(playlistID)
