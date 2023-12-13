@@ -888,3 +888,66 @@
 }
 
 .searchResult:hover { border: 1px solid var(--green); }
+
+.resultHeading {
+  display: flex;
+  gap: 1rem;
+  font-size: 1.4rem;
+}
+
+.button2 {
+  background: unset;
+  color: white;
+  fill: white;
+  padding: .5rem .8rem;
+}
+
+.button2:hover {
+  color: var(--green);
+}
+
+.description {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.checkboxes {
+  display: flex;
+  gap: 2rem;
+  padding-bottom: 1rem;
+}
+
+.searchBar {
+  position: relative;
+  width: 500px;
+  box-shadow: inset 3px 3px 5px #000;
+  background-color: var(--black);
+  padding: .4rem;
+  margin: 1rem 0 3rem 0;
+}
+
+.search {
+  color: white;
+  height: 30px;
+  width: 100%;
+  padding: 0 10px;
+  background-color: unset;
+}
+
+.searchBtn {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  background-color: unset;
+  color: white;
+}
+
+.searchBar:hover .searchBtn {
+  color: var(--green);
+}
+
+.searchBar input:focus {
+  outline: 0;
+}
